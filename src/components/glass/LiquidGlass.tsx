@@ -118,7 +118,7 @@ export function LiquidGlass({ children, className, radius = 999, warp = false }:
         scratch.width = tw;
         scratch.height = th;
       }
-      ctx.fillStyle = "#0a0a0b";
+      ctx.fillStyle = "#14204a"; // the navy band the hero glass sits on
       ctx.fillRect(0, 0, tw, th);
       const src = currentSource;
       if (src && src.isConnected) {

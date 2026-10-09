@@ -16,8 +16,9 @@ uniform float uT;         // seconds
 uniform float uP;         // phase progress 0..1
 uniform float uMode;      // 0 = cover, 1 = reveal
 
-const vec3 BG = vec3(0.039, 0.039, 0.043);
-const vec3 AMBER = vec3(0.949, 0.710, 0.267);
+const vec3 BG = vec3(0.255, 0.412, 0.882);    // royal blue #4169E1
+const vec3 AMBER = vec3(1.0, 0.980, 0.741);   // cream #fffabd filaments
+const vec3 RED = vec3(0.851, 0.325, 0.310);   // red #d9534f front
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p) {
@@ -63,7 +64,7 @@ void main() {
     float front = exp(-abs(dist - radius) / (18.0 + 60.0 * e));
     float f = filaments(d, scale, e);
     float wake = smoothstep(radius * 1.25, radius * 0.2, dist);   // filaments lead slightly ahead of the front
-    col = BG + AMBER * (f * 0.9 * wake + front * 0.55 * (1.0 - e * 0.6));
+    col = BG + AMBER * (f * 0.75 * wake) + RED * front * 0.9 * (1.0 - e * 0.6);
     alpha = clamp(inside + front * 0.8 + f * wake * 0.6, 0.0, 1.0);
   } else {
     // REVEAL: a hole opens from the centre; filaments disperse outward and fade.
@@ -75,7 +76,7 @@ void main() {
     float cover = smoothstep(hole - 3.0, hole + 3.0, dist);
     float rim = exp(-abs(dist - hole) / 26.0) * (1.0 - e);
     float f = filaments(d, scale, 1.0 + e) * (1.0 - e);
-    col = BG + AMBER * (f * 0.8 + rim * 0.6);
+    col = BG + AMBER * f * 0.7 + RED * rim * 0.8;
     alpha = clamp(cover * (1.0 - e * 0.15) + rim * 0.8, 0.0, 1.0) * (1.0 - smoothstep(0.85, 1.0, e));
   }
 

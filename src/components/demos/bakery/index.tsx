@@ -122,7 +122,7 @@ export default function BakeryDemo() {
 
   const cellTone = (array: "choosing" | "number", i: number) => {
     if (!last || last.array !== array || last.index !== i) return "border-line";
-    return last.kind === "write" ? "border-accent bg-accent-soft text-accent" : "border-fg-muted bg-white/[0.06] text-fg";
+    return last.kind === "write" ? "border-accent bg-accent-soft text-accent" : "border-fg-muted bg-fg/[0.06] text-fg";
   };
 
   return (
@@ -198,7 +198,7 @@ export default function BakeryDemo() {
               config.broken ? "border-accent text-accent" : "border-line text-fg-muted hover:border-line-strong hover:text-fg",
             )}
           >
-            <span className={cx("relative h-3.5 w-6 rounded-full", config.broken ? "bg-accent" : "bg-white/15")} aria-hidden>
+            <span className={cx("relative h-3.5 w-6 rounded-full", config.broken ? "bg-accent" : "bg-fg/15")} aria-hidden>
               <span
                 className={cx(
                   "absolute top-0.5 size-2.5 rounded-full bg-bg transition-[left]",
@@ -219,7 +219,7 @@ export default function BakeryDemo() {
                   key={t.id}
                   className={cx(
                     "grid grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-3 rounded-input border px-3 py-2 transition-colors",
-                    active ? "border-line-strong bg-white/[0.04]" : "border-line bg-bg",
+                    active ? "border-line-strong bg-fg/[0.04]" : "border-line bg-bg",
                   )}
                 >
                   <span className={cx("font-mono text-sm", active ? "text-fg" : "text-fg-muted")}>T{t.id}</span>
@@ -271,7 +271,7 @@ export default function BakeryDemo() {
                   <span className="size-2 rounded-sm border border-accent bg-accent-soft" aria-hidden /> written this step
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="size-2 rounded-sm border border-fg-muted bg-white/[0.06]" aria-hidden /> read this step
+                  <span className="size-2 rounded-sm border border-fg-muted bg-fg/[0.06]" aria-hidden /> read this step
                 </span>
               </div>
             </div>
@@ -338,8 +338,8 @@ export default function BakeryDemo() {
                   return (
                     <div key={i} className="flex items-center gap-2 font-mono text-[11px] tabular-nums">
                       <span className="w-6 text-fg-muted">T{i}</span>
-                      <div className="h-1.5 flex-1 rounded-full bg-white/[0.06]">
-                        <div className="h-full rounded-full bg-white/50" style={{ width: `${(c / max) * 100}%` }} />
+                      <div className="h-1.5 flex-1 rounded-full bg-fg/[0.06]">
+                        <div className="h-full rounded-full bg-fg/50" style={{ width: `${(c / max) * 100}%` }} />
                       </div>
                       <span className="w-8 text-right text-fg-muted">{c}</span>
                     </div>

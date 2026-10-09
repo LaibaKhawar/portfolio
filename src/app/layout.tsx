@@ -6,6 +6,7 @@ import { SmoothScroll } from "@/components/shell/SmoothScroll";
 import { SiteNav } from "@/components/shell/SiteNav";
 import { Footer } from "@/components/shell/Footer";
 import { Cursor } from "@/components/shell/Cursor";
+import { MotionPrefs } from "@/components/shell/MotionPrefs";
 import { profile } from "@/content/profile";
 import { siteDescription, siteTitle, siteUrl } from "@/lib/site";
 
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export const viewport: Viewport = { themeColor: "#0a0a0b", colorScheme: "dark" };
+export const viewport: Viewport = { themeColor: "#4169e1", colorScheme: "light" };
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -47,15 +48,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
+        <MotionPrefs>
         <FlowTransitionProvider>
           <SmoothScroll>
-            <div id="top-sentinel" aria-hidden className="absolute top-0 h-4 w-px" />
             <SiteNav />
             <main id="main">{children}</main>
             <Footer />
           </SmoothScroll>
         </FlowTransitionProvider>
         <Cursor />
+        </MotionPrefs>
       </body>
     </html>
   );

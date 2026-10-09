@@ -223,7 +223,7 @@ export function FlowTransitionProvider({ children }: { children: ReactNode }) {
         className="pointer-events-none fixed inset-0 z-[79]"
         style={{
           clipPath: "circle(0px at 50% 50%)",
-          background: "radial-gradient(circle at 50% 50%, rgba(242,181,68,0.18), #0a0a0b 55%)",
+          background: "radial-gradient(circle at 50% 50%, #fffabd 0%, #4169e1 35%)",
         }}
       />
       <div aria-live="polite" className="sr-only">

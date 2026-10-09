@@ -6,8 +6,9 @@ import * as THREE from "three";
 import { setGlassSource } from "@/components/glass/LiquidGlass";
 import { stages } from "./stages";
 
-const AMBER = new THREE.Color("#f2b544");
-const DIM = new THREE.Color("#3a3833");
+const PACKET = new THREE.Color("#fffabd"); // cream data packets
+const LIT = new THREE.Color("#6f8ff0"); // royal blue, lightened for the navy band
+const DIM = new THREE.Color("#2f4590");
 const STAGE_COUNT = stages.length;
 const NODES_PER_STAGE = 9;
 const PARTICLES = 520;
@@ -159,7 +160,7 @@ function Network({ active, reduced }: { active: number | null; reduced: boolean 
     for (let i = 0; i < edges.stageIdx.length; i++) {
       const s = edges.stageIdx[i];
       const lit = active === null ? 0.18 : s === active || s === active - 1 ? 0.75 : 0.08;
-      tmp.copy(DIM).lerp(AMBER, lit);
+      tmp.copy(DIM).lerp(LIT, lit);
       col.setXYZ(i, tmp.r * (0.35 + lit), tmp.g * (0.35 + lit), tmp.b * (0.35 + lit));
     }
     col.needsUpdate = true;
@@ -201,7 +202,7 @@ function Network({ active, reduced }: { active: number | null; reduced: boolean 
       new THREE.ShaderMaterial({
         vertexShader: pointVertex,
         fragmentShader: pointFragment,
-        uniforms: { uColor: { value: AMBER } },
+        uniforms: { uColor: { value: PACKET } },
         transparent: true,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
@@ -210,7 +211,7 @@ function Network({ active, reduced }: { active: number | null; reduced: boolean 
   );
   const nodeMaterial = useMemo(() => {
     const m = material.clone();
-    m.uniforms = { uColor: { value: new THREE.Color("#ecebe6") } };
+    m.uniforms = { uColor: { value: new THREE.Color("#d9534f") } };
     m.blending = THREE.NormalBlending;
     return m;
   }, [material]);

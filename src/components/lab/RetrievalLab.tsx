@@ -22,7 +22,7 @@ function highlight(text: string, terms: Set<string>) {
   return text.split(/(\s+)/).map((w, i) => {
     const t = tokenize(w)[0];
     return t && terms.has(t) ? (
-      <mark key={i} className="rounded-sm bg-accent-soft px-0.5 text-accent">
+      <mark key={i} className="rounded-sm bg-highlight-soft px-0.5 text-fg">
         {w}
       </mark>
     ) : (
@@ -174,7 +174,7 @@ export function RetrievalLab() {
             </Button>
           ) : (
             <div className="min-w-44">
-              <div className="h-1 overflow-hidden rounded-full bg-white/[0.06]">
+              <div className="h-1 overflow-hidden rounded-full bg-fg/[0.06]">
                 <div
                   className="h-full bg-accent transition-[width]"
                   style={{ width: model.kind === "ready" ? "100%" : model.kind === "loading" ? `${model.pct}%` : `${Math.round((model.done / model.total) * 100)}%` }}

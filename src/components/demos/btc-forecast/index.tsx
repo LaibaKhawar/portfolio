@@ -6,8 +6,8 @@ import { bestBy, evaluateAll, type Metrics, type ModelKey, type ModelResult } fr
 
 type BtcData = { source: string; dates: string[]; close: number[] };
 
-const ACCENT = "#f2b544";
-const PRICE = "rgba(255,255,255,0.62)";
+const ACCENT = "#4169e1";
+const PRICE = "rgba(20,32,74,0.62)";
 const MODEL_ORDER: ModelKey[] = ["linear", "poly2", "poly3", "persistence", "ar"];
 const SHORT: Record<ModelKey, string> = {
   linear: "Linear",
@@ -146,19 +146,19 @@ function PriceChart({
         onPointerMove={onMove}
         onPointerLeave={() => setHover(null)}
       >
-        <rect x={ml} y={mt} width={geom.x(split) - ml} height={ih} fill="rgba(255,255,255,0.025)" />
-        <rect x={geom.x(split)} y={mt} width={ml + iw - geom.x(split)} height={ih} fill="rgba(242,181,68,0.05)" />
+        <rect x={ml} y={mt} width={geom.x(split) - ml} height={ih} fill="rgba(20,32,74,0.025)" />
+        <rect x={geom.x(split)} y={mt} width={ml + iw - geom.x(split)} height={ih} fill="rgba(65,105,225,0.05)" />
         {geom.yTicks.map((v) => (
           <g key={v}>
-            <line x1={ml} x2={ml + iw} y1={geom.y(v)} y2={geom.y(v)} stroke="rgba(255,255,255,0.06)" />
-            <text x={ml - 6} y={geom.y(v) + 3} textAnchor="end" fontSize="10" fill="#75746f" className="font-mono">
+            <line x1={ml} x2={ml + iw} y1={geom.y(v)} y2={geom.y(v)} stroke="rgba(20,32,74,0.06)" />
+            <text x={ml - 6} y={geom.y(v) + 3} textAnchor="end" fontSize="10" fill="#5f6789" className="font-mono">
               {compact(v)}
             </text>
           </g>
         ))}
         {geom.xTicks.map((t, k) =>
           k % showEvery === 0 ? (
-            <text key={t.i} x={geom.x(t.i)} y={H - 8} textAnchor="middle" fontSize="10" fill="#75746f" className="font-mono">
+            <text key={t.i} x={geom.x(t.i)} y={H - 8} textAnchor="middle" fontSize="10" fill="#5f6789" className="font-mono">
               {t.label}
             </text>
           ) : null,
@@ -167,17 +167,17 @@ function PriceChart({
         {trainPath ? <path d={trainPath} fill="none" stroke={ACCENT} strokeOpacity="0.45" strokeWidth="1.2" strokeDasharray="4 3" /> : null}
         {testPath ? <path d={testPath} fill="none" stroke={ACCENT} strokeWidth="1.6" /> : null}
         <line x1={geom.x(split)} x2={geom.x(split)} y1={mt} y2={mt + ih} stroke={ACCENT} strokeDasharray="3 3" />
-        <text x={geom.x(split) - 4} y={mt + 12} textAnchor="end" fontSize="10" fill="#a3a29c">
+        <text x={geom.x(split) - 4} y={mt + 12} textAnchor="end" fontSize="10" fill="#3c4670">
           train
         </text>
         <text x={geom.x(split) + 4} y={mt + 12} fontSize="10" fill={ACCENT}>
           test
         </text>
-        {hover !== null ? <line x1={geom.x(hover)} x2={geom.x(hover)} y1={mt} y2={mt + ih} stroke="rgba(255,255,255,0.3)" /> : null}
+        {hover !== null ? <line x1={geom.x(hover)} x2={geom.x(hover)} y1={mt} y2={mt + ih} stroke="rgba(20,32,74,0.3)" /> : null}
       </svg>
       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-fg-faint">
         <span className="inline-flex items-center gap-1.5">
-          <span aria-hidden className="h-0.5 w-4 bg-white/60" /> Actual close
+          <span aria-hidden className="h-0.5 w-4 bg-fg/60" /> Actual close
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span aria-hidden className="h-0.5 w-4 bg-accent" /> {result?.label ?? "Model"} (test)
@@ -270,7 +270,7 @@ export default function BtcForecastDemo() {
                 value={split}
                 onChange={(e) => setSplit(Number(e.target.value))}
                 aria-valuetext={`Test starts ${data.dates[split]}`}
-                className="w-full accent-[#f2b544]"
+                className="w-full accent-[#4169e1]"
               />
             </div>
             <div className="grid gap-1.5">
@@ -323,7 +323,7 @@ export default function BtcForecastDemo() {
                 </thead>
                 <tbody>
                   {results.map((r, i) => (
-                    <tr key={r.key} className={cx("border-b border-line last:border-b-0", overlay === r.key && "bg-white/[0.03]")}>
+                    <tr key={r.key} className={cx("border-b border-line last:border-b-0", overlay === r.key && "bg-fg/[0.03]")}>
                       <th scope="row" className="px-3 py-2 text-left font-normal text-fg">
                         {r.label}
                       </th>

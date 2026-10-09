@@ -9,9 +9,9 @@ type ButtonVariant = "primary" | "ghost" | "quiet";
 const buttonBase =
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-[background-color,border-color,color,transform] duration-200 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40";
 const buttonVariants: Record<ButtonVariant, string> = {
-  primary: "bg-accent px-5 py-2.5 text-accent-ink hover:bg-[#f6c566]",
-  ghost: "border border-line-strong px-5 py-2.5 text-fg hover:border-fg-muted hover:bg-white/[0.04]",
-  quiet: "px-3 py-1.5 text-fg-muted hover:text-fg hover:bg-white/[0.05]",
+  primary: "bg-accent px-5 py-2.5 text-accent-ink hover:bg-accent-hover",
+  ghost: "border border-line-strong px-5 py-2.5 text-fg hover:border-fg-muted hover:bg-fg/[0.04]",
+  quiet: "px-3 py-1.5 text-fg-muted hover:text-fg hover:bg-fg/[0.05]",
 };
 
 export function buttonClass(variant: ButtonVariant = "ghost", extra?: string) {
@@ -103,7 +103,7 @@ export const inputClass =
   "w-full rounded-input border border-line-strong bg-bg px-3 py-2 text-sm text-fg placeholder:text-fg-faint focus:border-accent focus:outline-none";
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cx("animate-pulse rounded-input bg-white/[0.05]", className)} />;
+  return <div className={cx("animate-pulse rounded-input bg-fg/[0.05]", className)} />;
 }
 
 export function ErrorNote({ children }: { children: ReactNode }) {

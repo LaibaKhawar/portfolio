@@ -1,8 +1,8 @@
 "use client";
 
+import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { useReducedMotion } from "motion/react";
 import { ArrowDownRight, FileText, GithubLogo, LinkedinLogo } from "@phosphor-icons/react";
 import { profile } from "@/content/profile";
 import { LiquidGlass } from "@/components/glass/LiquidGlass";
@@ -28,7 +28,7 @@ function hasWebGL() {
 const noopSubscribe = () => () => {};
 
 export function Hero() {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotionSafe();
   const sectionRef = useRef<HTMLElement>(null);
   const webgl = useSyncExternalStore(noopSubscribe, hasWebGL, () => false);
   const [visible, setVisible] = useState(true);
@@ -43,7 +43,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section ref={sectionRef} aria-labelledby="hero-title" className="relative isolate flex min-h-[100dvh] flex-col overflow-hidden pt-24">
+    <section ref={sectionRef} aria-labelledby="hero-title" className="theme-ink relative isolate -mt-px flex min-h-[100dvh] flex-col overflow-hidden rounded-b-[40px] pt-24 md:rounded-b-[88px]">
       {/* 3D network: full-bleed behind the copy on mobile, right-weighted on desktop */}
       <div className="absolute inset-0 -z-10 md:left-[18%]">
         {webgl ? <HeroScene active={active} visible={visible} reduced={reduce} /> : null}

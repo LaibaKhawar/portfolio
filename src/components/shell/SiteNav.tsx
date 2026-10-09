@@ -17,7 +17,6 @@ const links = [
 export function SiteNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   // Close the mobile menu after navigation (adjust state during render, not in an effect).
   const [lastPath, setLastPath] = useState(pathname);
@@ -26,12 +25,6 @@ export function SiteNav() {
     setOpen(false);
   }
   useEffect(() => {
-    const io = new IntersectionObserver(([e]) => setScrolled(!e.isIntersecting));
-    const sentinel = document.getElementById("top-sentinel");
-    if (sentinel) io.observe(sentinel);
-    return () => io.disconnect();
-  }, [pathname]);
-  useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
@@ -39,16 +32,16 @@ export function SiteNav() {
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6">
+    <header className="site-nav fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6">
       <nav
         aria-label="Primary"
         className={cx(
           "mx-auto flex h-14 max-w-[1400px] items-center justify-between rounded-full px-2 pl-5 transition-[background-color,border-color,box-shadow] duration-500",
-          scrolled || open ? "glass" : "border border-transparent",
+          "glass",
         )}
       >
         <FlowLink href="/" className="font-mono text-sm tracking-tight text-fg" aria-label="Laiba Khawar, home">
-          laiba<span className="text-accent">.</span>khawar
+          laiba<span className="text-red">.</span>khawar
         </FlowLink>
 
         <ul className="hidden items-center gap-1 md:flex">
@@ -87,7 +80,7 @@ export function SiteNav() {
           <ul className="grid">
             {[...links, { href: "/#contact", label: "Get in touch" }].map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="block rounded-input px-4 py-3 text-base text-fg hover:bg-white/[0.05]" onClick={() => setOpen(false)}>
+                <Link href={l.href} className="block rounded-input px-4 py-3 text-base text-fg hover:bg-fg/[0.05]" onClick={() => setOpen(false)}>
                   {l.label}
                 </Link>
               </li>

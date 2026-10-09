@@ -45,8 +45,8 @@ function VehicleChip({ v, dim, title }: { v: Vehicle; dim?: boolean; title?: str
       title={title}
       className={cx(
         "inline-flex h-5 items-center justify-center rounded-[5px] font-mono text-[9px] leading-none",
-        bus ? "w-12 border border-accent bg-accent-soft text-accent" : "w-7 bg-white/80 text-bg",
-        dim && (bus ? "border-dashed opacity-80" : "bg-white/35"),
+        bus ? "w-12 border border-accent bg-accent-soft text-accent" : "w-7 bg-fg/80 text-bg",
+        dim && (bus ? "border-dashed opacity-80" : "bg-fg/35"),
       )}
     >
       {v.label}
@@ -257,7 +257,7 @@ export default function BridgeDemo() {
             <div className="mt-1.5 text-[10px] leading-snug text-fg-faint">Solid: after the mutex. Faded: blocked on a condvar.</div>
           </div>
           <div className="relative min-h-24 overflow-hidden rounded-input border border-line-strong bg-surface">
-            <div className="absolute inset-x-0 top-1/2 border-t border-dashed border-white/10" aria-hidden />
+            <div className="absolute inset-x-0 top-1/2 border-t border-dashed border-fg/10" aria-hidden />
             <div className="absolute left-2 top-1.5 text-[11px] text-fg-faint">
               Bridge: {sim.cars} car{sim.cars === 1 ? "" : "s"}, {sim.buses} bus{sim.buses === 1 ? "" : "es"}
             </div>

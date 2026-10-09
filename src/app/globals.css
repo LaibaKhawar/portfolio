@@ -1,32 +1,65 @@
 @import "tailwindcss";
 
 /*
-  Design tokens. One theme (dark), one accent (signal amber), one radius system:
-  - interactive controls are full pills
-  - surfaces and cards use --radius-card (16px)
-  - inputs use --radius-input (10px)
+  Design tokens. Palette: royal blue #4169E1, cream #fffabd, red #d9534f, with a
+  navy ink (#14204a, a deepened royal blue) for body text and the dark band.
+  - Pages are cream; royal blue carries headings, links, and primary buttons.
+  - Red is decorative (highlights, borders, large type): it is 3.7:1 on cream, so
+    small error text uses the deeper --danger instead.
+  - Radius system: controls are full pills, surfaces --radius-card (16px), inputs 10px.
 */
 :root {
-  --bg: #0a0a0b;
-  --bg-raised: #111113;
-  --surface: #16161a;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.16);
-  --fg: #ecebe6;
-  --fg-muted: #a3a29c;
-  --fg-faint: #75746f;
-  --accent: #f2b544;
-  --accent-soft: rgba(242, 181, 68, 0.14);
-  --accent-ink: #1a1305;
-  --danger: #f2766b;
-  --ok: #8fd6a4;
+  --royal: #4169e1;
+  --cream: #fffabd;
+  --red: #d9534f;
+  --ink: #14204a;
+
+  --bg: var(--cream);
+  --bg-raised: #fffde4;
+  --surface: #fff7a6;
+  --line: rgba(20, 32, 74, 0.12);
+  --line-strong: rgba(20, 32, 74, 0.24);
+  --fg: var(--ink);
+  --fg-muted: #3c4670;
+  --fg-faint: #5f6789;
+  --accent: var(--royal);
+  --accent-soft: rgba(65, 105, 225, 0.12);
+  --accent-ink: var(--cream);
+  --accent-hover: #3354c4;
+  --highlight: var(--red);
+  --highlight-soft: rgba(217, 83, 79, 0.14);
+  --danger: #b3302c;
+  --ok: #2f7a4a;
   --radius-card: 16px;
   --radius-input: 10px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
+}
+
+/* Inverted scope for the navy band after the intro. Same tokens, flipped. */
+.theme-ink {
+  --bg: var(--ink);
+  --bg-raised: #1b2a5e;
+  --surface: #22336d;
+  --line: rgba(255, 250, 189, 0.14);
+  --line-strong: rgba(255, 250, 189, 0.28);
+  --fg: var(--cream);
+  --fg-muted: rgba(255, 250, 189, 0.8);
+  --fg-faint: rgba(255, 250, 189, 0.62);
+  --accent: var(--cream);
+  --accent-soft: rgba(255, 250, 189, 0.12);
+  --accent-ink: var(--ink);
+  --accent-hover: #fffde0;
   color-scheme: dark;
+  background: var(--bg);
+  color: var(--fg);
 }
 
 @theme inline {
+  --color-royal: var(--royal);
+  --color-cream: var(--cream);
+  --color-red: var(--red);
+  --color-ink: var(--ink);
   --color-bg: var(--bg);
   --color-bg-raised: var(--bg-raised);
   --color-surface: var(--surface);
@@ -38,6 +71,9 @@
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
+  --color-accent-hover: var(--accent-hover);
+  --color-highlight: var(--highlight);
+  --color-highlight-soft: var(--highlight-soft);
   --color-danger: var(--danger);
   --color-ok: var(--ok);
   --font-sans: var(--font-geist-sans);
@@ -48,7 +84,7 @@
 
 html {
   background: var(--bg);
-  scrollbar-color: #2a2a2e var(--bg);
+  scrollbar-color: rgba(20, 32, 74, 0.35) var(--bg);
 }
 
 body {
@@ -60,8 +96,8 @@ body {
 }
 
 ::selection {
-  background: var(--accent);
-  color: var(--accent-ink);
+  background: var(--royal);
+  color: var(--cream);
 }
 
 :focus-visible {
@@ -85,11 +121,11 @@ html.lenis body {
 /* Frosted glass surface: backdrop-filter approximation used where the
    WebGL liquid glass is not appropriate (long-lived chrome like the nav). */
 .glass {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  background: linear-gradient(180deg, rgba(255, 253, 228, 0.82), rgba(255, 250, 189, 0.7));
   border: 1px solid var(--line);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 20px 40px -24px rgba(0, 0, 0, 0.8);
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 18px 40px -24px rgba(20, 32, 74, 0.45);
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
 }
@@ -109,7 +145,8 @@ html.lenis body {
   inset: 0;
   pointer-events: none;
   z-index: 60;
-  opacity: 0.035;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
@@ -166,4 +203,16 @@ html.lenis body {
 }
 .prose-case p + p {
   margin-top: 1rem;
+}
+
+/* The site navigation steps aside while the character intro fills the screen. */
+.site-nav {
+  transition:
+    transform 500ms var(--ease-out),
+    opacity 400ms ease;
+}
+html[data-intro="on"] .site-nav {
+  transform: translateY(-130%);
+  opacity: 0;
+  pointer-events: none;
 }

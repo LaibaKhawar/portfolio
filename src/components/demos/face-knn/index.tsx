@@ -347,7 +347,7 @@ function Confusion({ ev, classes }: { ev: Evaluation; classes: number }) {
                   <td
                     key={c}
                     className={cx("size-6 rounded-[3px] text-center", v === 0 ? "text-fg-faint/40" : r === c ? "text-accent-ink" : "text-fg")}
-                    style={{ backgroundColor: v === 0 ? "rgba(255,255,255,0.03)" : `rgba(242,181,68,${(0.15 + 0.85 * (v / max)).toFixed(3)})` }}
+                    style={{ backgroundColor: v === 0 ? "rgba(20,32,74,0.03)" : `rgba(65,105,225,${(0.15 + 0.85 * (v / max)).toFixed(3)})` }}
                   >
                     {v}
                   </td>

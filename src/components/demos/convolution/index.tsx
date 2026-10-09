@@ -435,7 +435,7 @@ export default function ConvolutionDemo() {
                       {rf.values.map((row, a) => (
                         <tr key={a}>
                           {row.map((v, b) => (
-                            <td key={b} className={cx("rounded-[4px] px-1.5 py-1 text-center", rf.weights[a][b] !== 0 ? "bg-accent-soft text-fg" : "bg-white/[0.03] text-fg-faint")}>
+                            <td key={b} className={cx("rounded-[4px] px-1.5 py-1 text-center", rf.weights[a][b] !== 0 ? "bg-accent-soft text-fg" : "bg-fg/[0.03] text-fg-faint")}>
                               <span className="block text-fg-muted">
                                 {fmtCell(v)}
                                 <span className="text-fg-faint"> x </span>

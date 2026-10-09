@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Certificate, GraduationCap } from "@phosphor-icons/react/dist/ssr";
 import { Hero } from "@/components/hero/Hero";
+import { CharacterIntro } from "@/components/intro/CharacterIntro";
 import { Section } from "@/components/ui/Section";
 import { ProjectCard } from "@/components/work/ProjectCard";
 import { SystemsExplorer } from "@/components/systems/SystemsExplorer";
@@ -20,6 +21,7 @@ export default function Home() {
 
   return (
     <>
+      <CharacterIntro />
       <Hero />
 
       <Section

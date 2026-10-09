@@ -39,7 +39,7 @@ function PipelinePreview({ p }: { p: Project }) {
 export function ProjectCard({ p, size = "standard", className }: { p: Project; size?: "feature" | "standard"; className?: string }) {
   const ref = useRef<HTMLElement>(null);
   return (
-    <article ref={ref} className={cx("group relative flex flex-col overflow-hidden rounded-card border border-line bg-bg-raised transition-colors hover:border-line-strong", className)}>
+    <article ref={ref} className={cx("group relative flex flex-col overflow-hidden rounded-card border border-line bg-bg-raised transition-colors hover:border-red/60", className)}>
       <div className={cx("relative overflow-hidden border-b border-line bg-bg", size === "feature" ? "aspect-[16/8] lg:aspect-auto lg:min-h-[320px] lg:flex-1" : "aspect-[16/9]")}>
         {p.cover ? (
           <Image
@@ -58,7 +58,7 @@ export function ProjectCard({ p, size = "standard", className }: { p: Project; s
           </span>
         ) : null}
         {/* the flow begins here and leaves the card when you open it */}
-        <span aria-hidden className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-x-100" />
+        <span aria-hidden className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-red transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-x-100" />
       </div>
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] text-fg-faint">
@@ -76,7 +76,7 @@ export function ProjectCard({ p, size = "standard", className }: { p: Project; s
           {p.tech.slice(0, size === "feature" ? 6 : 4).map((t) => (
             <Tag key={t}>{t}</Tag>
           ))}
-          <ArrowUpRight size={16} aria-hidden className="ml-auto text-fg-faint transition-[color,transform] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
+          <ArrowUpRight size={16} aria-hidden className="ml-auto text-fg-faint transition-[color,transform] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-red" />
         </div>
       </div>
     </article>

@@ -1,13 +1,14 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
+import { motion } from "motion/react";
 import type { ReactNode } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 /** Word-by-word masked rise. Text stays in the DOM as one string for screen readers. */
 export function WordReveal({ text, className, delay = 0, as = "span" }: { text: string; className?: string; delay?: number; as?: "span" | "h1" | "h2" | "p" }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const Tag = as;
   const words = text.split(" ");
   return (
@@ -31,7 +32,7 @@ export function WordReveal({ text, className, delay = 0, as = "span" }: { text: 
 
 /** Fade and rise when scrolled into view, once. */
 export function InView({ children, className, delay = 0, y = 24 }: { children: ReactNode; className?: string; delay?: number; y?: number }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   return (
     <motion.div
       className={className}

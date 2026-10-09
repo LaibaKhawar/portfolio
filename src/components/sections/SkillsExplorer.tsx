@@ -41,7 +41,7 @@ export function SkillsExplorer() {
                     onClick={() => setSelected((c) => (c === s ? null : s))}
                     className={cx(
                       "rounded-full border px-2.5 py-1 text-xs transition-colors",
-                      selected === s ? "border-accent bg-accent-soft text-accent" : "border-line text-fg-muted hover:border-line-strong hover:text-fg",
+                      selected === s ? "border-red bg-highlight-soft text-fg" : "border-line text-fg-muted hover:border-line-strong hover:text-fg",
                     )}
                   >
                     {s}

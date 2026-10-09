@@ -1,5 +1,6 @@
 "use client";
 
+import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import "@xyflow/react/dist/base.css";
 import { useMemo, useState } from "react";
 import {
@@ -13,7 +14,6 @@ import {
   type Node,
   type NodeProps,
 } from "@xyflow/react";
-import { useReducedMotion } from "motion/react";
 import type { ArchEdge, ArchNode } from "@/content/projects";
 import { cx } from "@/components/ui/primitives";
 
@@ -56,7 +56,7 @@ function FlowEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targ
   const [path, lx, ly] = getBezierPath({ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition });
   return (
     <>
-      <BaseEdge id={id} path={path} style={{ stroke: "rgba(255,255,255,0.18)", strokeWidth: 1.2 }} />
+      <BaseEdge id={id} path={path} style={{ stroke: "rgba(20,32,74,0.18)", strokeWidth: 1.2 }} />
       {data?.animate ? (
         <circle r={2.6} fill="var(--accent)">
           <animateMotion dur="2.4s" repeatCount="indefinite" begin={`${data.delay}s`} path={path} />
@@ -75,7 +75,7 @@ const nodeTypes = { system: SystemNode };
 const edgeTypes = { flow: FlowEdge };
 
 export function ArchitectureDiagram({ nodes, edges, height = 340, title }: { nodes: ArchNode[]; edges: ArchEdge[]; height?: number; title: string }) {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotionSafe();
   const [selected, setSelected] = useState<string | null>(null);
 
   const { rfNodes, rfEdges } = useMemo(() => {
@@ -110,7 +110,7 @@ export function ArchitectureDiagram({ nodes, edges, height = 340, title }: { nod
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
-      <div className="overflow-hidden rounded-card border border-line bg-bg" style={{ height }} data-lenis-prevent>
+      <div className="overflow-hidden rounded-card border border-line bg-bg-raised" style={{ height }} data-lenis-prevent>
         <ReactFlow
           nodes={rfNodes}
           edges={rfEdges}
@@ -130,7 +130,7 @@ export function ArchitectureDiagram({ nodes, edges, height = 340, title }: { nod
           onNodeClick={(_, n) => setSelected((s) => (s === n.id ? null : n.id))}
           onPaneClick={() => setSelected(null)}
           aria-label={`${title} architecture diagram`}
-          colorMode="dark"
+          colorMode="light"
         />
       </div>
       <div className="rounded-card border border-line bg-bg-raised p-4" aria-live="polite">
@@ -143,7 +143,7 @@ export function ArchitectureDiagram({ nodes, edges, height = 340, title }: { nod
         ) : (
           <>
             <div className="text-sm text-fg">How it fits together</div>
-            <p className="mt-2 text-sm leading-relaxed text-fg-muted">Select a component to see what it does. Amber packets show the direction data moves.</p>
+            <p className="mt-2 text-sm leading-relaxed text-fg-muted">Select a component to see what it does. Blue packets show the direction data moves.</p>
           </>
         )}
         {/* Text alternative for the diagram */}

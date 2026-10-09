@@ -393,7 +393,7 @@ export default function CryptarithmDemo() {
                           className={cx(
                             "flex flex-col items-center rounded-[6px] py-1",
                             isResult && "mt-1 border-t border-line-strong pt-2",
-                            ch && "bg-white/[0.03]",
+                            ch && "bg-fg/[0.03]",
                           )}
                         >
                           <span className="text-xs text-fg-muted">{ch ?? ""}</span>
