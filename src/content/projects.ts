@@ -466,7 +466,10 @@ export const projects: Project[] = [
     demo: "bakery",
     demoNote: "Each thread is a state machine that yields after every shared read or write, so you can watch tickets being taken and compared. Turn off the choosing flags to see mutual exclusion break.",
     overview: "Lamport's Bakery algorithm for N threads using pthreads and atomics. Threads take a ticket one larger than any they can see, then wait for every thread with a smaller (ticket, id) pair.",
-    limitations: ["The C++ version deviates from the canonical algorithm (it reuses tickets and uses relaxed memory ordering); the simulator implements the canonical form."],
+    limitations: [
+      "The C++ version deviates from the canonical algorithm: it re-takes tickets inside the wait loop, increments the ticket on unlock instead of clearing it, and uses relaxed memory ordering.",
+      "Built and run, the original program prints the first thread entering the critical section and then hangs, a consequence of the unlock step. The simulator implements the canonical form instead.",
+    ],
   },
   {
     slug: "bridge-sync",
@@ -481,6 +484,7 @@ export const projects: Project[] = [
     demo: "bridge",
     demoNote: "Up to two cars at a time, or one bus alone. Toggle the original wake-up logic to reproduce its lost-wake-up stall, then switch to the fixed version.",
     overview: "A pthreads simulation of a single-lane bridge where cars and buses are threads. At most two cars may cross together, a bus crosses alone, and the two never share the bridge.",
+    limitations: ["On exit, a bus signals only the bus condition variable and a car broadcasts only to cars, so a bus waiting behind cars is never woken. The direction input is read but never used."],
   },
   {
     slug: "btc-forecasting",
