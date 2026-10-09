@@ -216,3 +216,14 @@ html[data-intro="on"] .site-nav {
   opacity: 0;
   pointer-events: none;
 }
+
+/* Intro typography: a display serif for the name and a handwritten face for the role.
+   The faces are loaded in layout.tsx (Gloock standing in for Migra, and Caveat). */
+.font-display {
+  font-family: var(--font-display-face), "Iowan Old Style", "Times New Roman", serif;
+  font-weight: 400;
+}
+.font-organic {
+  font-family: var(--font-hand), "Bradley Hand", cursive;
+  font-weight: 600;
+}

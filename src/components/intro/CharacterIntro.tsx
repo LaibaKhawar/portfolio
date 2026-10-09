@@ -1,17 +1,20 @@
 "use client";
 
-import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import { useEffect, useRef } from "react";
 import { animate, motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
+import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import { profile } from "@/content/profile";
 import { Character, MOUTH, VIEW, type CharacterMotion } from "./Character";
 
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
+const FACE_MAX = 2.4; // keep the raster illustration sharp; the vector mouth does the rest
+const PUPIL_RANGE = { x: 8, y: 6 }; // image px
 
 /**
- * Opening scene: the character on a royal-blue field. Scrolling opens her smile into
- * an "o" and zooms the view into her mouth until it fills the screen, which hands
- * over to the navy section that follows. Reduced motion: a static portrait.
+ * Opening scene: Laiba's illustration on a royal-blue field. Her eyes follow the
+ * pointer and blink; clicking makes her wink. Scrolling widens her "o" mouth, zooms
+ * in, and grows the mouth until it fills the screen in navy, handing over to the
+ * navy section below. Reduced motion: a still portrait.
  */
 export function CharacterIntro() {
   const reduce = useReducedMotionSafe();
@@ -21,91 +24,73 @@ export function CharacterIntro() {
 
   const { scrollYProgress: p } = useScroll({ target: track, offset: ["start start", "end end"] });
 
-  // Idle and pointer-driven motion
   const pupilXRaw = useMotionValue(0);
   const pupilYRaw = useMotionValue(0);
-  const pupilX = useSpring(pupilXRaw, { stiffness: 180, damping: 18 });
-  const pupilY = useSpring(pupilYRaw, { stiffness: 180, damping: 18 });
+  const pupilX = useSpring(pupilXRaw, { stiffness: 170, damping: 18 });
+  const pupilY = useSpring(pupilYRaw, { stiffness: 170, damping: 18 });
   const blink = useMotionValue(1);
   const winkLeft = useMotionValue(1);
-  const smileScale = useMotionValue(0);
-  const browLiftRaw = useMotionValue(0);
-  const browLift = useSpring(browLiftRaw, { stiffness: 220, damping: 16 });
-  const blushRaw = useMotionValue(0.22);
-  const blushOpacity = useSpring(blushRaw, { stiffness: 120, damping: 20 });
-  const hairSway = useMotionValue(0);
+  const headTilt = useMotionValue(0);
 
-  // Scroll-driven motion
-  const open = useTransform(p, [0, 0.16], [0, 1]);
-  const mouthClipY = useTransform(open, (k) => MOUTH.cy - MOUTH.r * (0.12 + 0.95 * k) - (k > 0.98 ? 6 : 0));
-  const mouthR = useTransform(open, [0, 1], [MOUTH.r, MOUTH.r + 6]);
-  const teethOpacity = useTransform(p, [0, 0.1], [1, 0]);
-  const zoomT = useTransform(p, [0.12, 0.84], [0, 1], { clamp: true });
-  const scale = useTransform(zoomT, (t) => {
-    if (typeof window === "undefined") return 1;
-    // Mouth radius in screen pixels at scale 1, and the scale needed to cover the viewport.
-    const h = figure.current?.getBoundingClientRect().height ?? window.innerHeight * 0.78;
-    const mouthPx = (MOUTH.r + 6) * (h / VIEW.h);
-    const cover = (Math.hypot(window.innerWidth, window.innerHeight) / mouthPx) * 1.15;
-    return 1 + (cover - 1) * Math.pow(t, 2.6);
+  const zoomT = useTransform(p, [0.1, 0.84], [0, 1], { clamp: true });
+  const faceScale = useTransform(zoomT, (t) => 1 + (FACE_MAX - 1) * Math.pow(t, 1.6));
+  const mouthScale = useTransform([p, zoomT], ([pv, t]: number[]) => {
+    const open = 1 + 0.5 * clamp(pv / 0.12, 0, 1); // the "o" widens first
+    if (typeof window === "undefined") return open;
+    // Rendered image px per viewBox unit at scale 1 (offsetHeight ignores transforms).
+    const k = (figure.current?.offsetHeight ?? window.innerHeight * 0.88) / VIEW;
+    const need = (Math.hypot(window.innerWidth, window.innerHeight) / 2) * 1.15;
+    const end = need / (MOUTH.ry * k * FACE_MAX);
+    return open + Math.max(0, end - open) * Math.pow(t, 2.3);
   });
+  const mouthColor = useTransform(zoomT, [0.08, 0.4], ["#c94d43", "#14204a"]);
   const chromeOpacity = useTransform(p, [0.02, 0.14], [1, 0]);
   const cover = useTransform(p, [0.88, 0.92], [0, 1]);
 
-  // Reduced motion: a still, smiling portrait that ignores scroll.
-  const stillClip = useMotionValue(MOUTH.cy - MOUTH.r * 0.12);
-  const stillR = useMotionValue(MOUTH.r);
-  const stillTeeth = useMotionValue(1);
+  // Reduced motion: a still portrait that ignores scroll.
+  const still = useMotionValue(1);
+  const stillColor = useMotionValue("#c94d43");
 
   const m: CharacterMotion = {
     pupilX,
     pupilY,
     blink,
     winkLeft,
-    mouthClipY: reduce ? stillClip : mouthClipY,
-    mouthR: reduce ? stillR : mouthR,
-    teethOpacity: reduce ? stillTeeth : teethOpacity,
-    smileScale,
-    browLift,
-    blushOpacity,
-    hairSway,
+    headTilt,
+    mouthScale: reduce ? still : mouthScale,
+    mouthColor: reduce ? stillColor : mouthColor,
   };
 
-  // Load-in: smile pops, then idle blinking and a slow hair sway.
+  // Idle life: blinking at irregular intervals and a slight head sway.
   useEffect(() => {
-    if (reduce) {
-      smileScale.set(1);
-      return;
-    }
-    const pop = animate(smileScale, 1, { type: "spring", stiffness: 260, damping: 14, delay: 0.55 });
-    const sway = animate(hairSway, [0, 1.2, 0, -1.2, 0], { duration: 7, repeat: Infinity, ease: "easeInOut" });
+    if (reduce) return;
+    const sway = animate(headTilt, [0, 0.9, 0, -0.9, 0], { duration: 8, repeat: Infinity, ease: "easeInOut" });
     let t: ReturnType<typeof setTimeout>;
     const loop = () => {
       t = setTimeout(() => {
         animate(blink, [1, 0.08, 1], { duration: 0.2, ease: "easeInOut" });
         loop();
-      }, 2400 + Math.random() * 3200);
+      }, 2200 + Math.random() * 3400);
     };
     loop();
     return () => {
-      pop.stop();
       sway.stop();
       clearTimeout(t);
     };
-  }, [reduce, smileScale, hairSway, blink]);
+  }, [reduce, headTilt, blink]);
 
-  // Pupils follow the pointer.
+  // Pupils follow the pointer within the lenses.
   useEffect(() => {
     if (reduce) return;
     const onMove = (e: PointerEvent) => {
       const r = figure.current?.getBoundingClientRect();
       if (!r) return;
-      const dx = e.clientX - (r.left + r.width / 2);
-      const dy = e.clientY - (r.top + r.height * (306 / VIEW.h));
+      const dx = e.clientX - (r.left + r.width * (600 / VIEW));
+      const dy = e.clientY - (r.top + r.height * (540 / VIEW));
       const d = Math.hypot(dx, dy) || 1;
-      const k = clamp(d / 260, 0, 1);
-      pupilXRaw.set((dx / d) * 7 * k);
-      pupilYRaw.set((dy / d) * 5 * k);
+      const k = clamp(d / 280, 0, 1);
+      pupilXRaw.set((dx / d) * PUPIL_RANGE.x * k);
+      pupilYRaw.set((dy / d) * PUPIL_RANGE.y * k);
     };
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => window.removeEventListener("pointermove", onMove);
@@ -115,9 +100,12 @@ export function CharacterIntro() {
   useEffect(() => {
     const el = stage.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => {
-      document.documentElement.dataset.intro = e.intersectionRatio > 0.6 ? "on" : "off";
-    }, { threshold: [0, 0.6, 1] });
+    const io = new IntersectionObserver(
+      ([e]) => {
+        document.documentElement.dataset.intro = e.intersectionRatio > 0.6 ? "on" : "off";
+      },
+      { threshold: [0, 0.6, 1] },
+    );
     io.observe(el);
     return () => {
       io.disconnect();
@@ -127,8 +115,7 @@ export function CharacterIntro() {
 
   const wink = () => {
     if (reduce) return;
-    animate(winkLeft, [1, 0.08, 1], { duration: 0.32, times: [0, 0.35, 1] });
-    animate(blushRaw, [0.22, 0.5, 0.22], { duration: 1.1 });
+    animate(winkLeft, [1, 0.08, 1], { duration: 0.34, times: [0, 0.35, 1] });
   };
 
   return (
@@ -136,13 +123,13 @@ export function CharacterIntro() {
       <div ref={stage} className="sticky top-0 h-[100dvh] overflow-hidden bg-royal text-cream">
         <motion.p
           style={{ opacity: reduce ? 1 : chromeOpacity }}
-          className="absolute top-5 left-5 z-10 text-3xl font-semibold tracking-tight sm:top-8 sm:left-10 sm:text-5xl"
+          className="font-display absolute top-5 left-5 z-10 text-4xl leading-none tracking-tight sm:top-8 sm:left-10 sm:text-6xl"
         >
           {profile.name}
         </motion.p>
         <motion.p
           style={{ opacity: reduce ? 1 : chromeOpacity }}
-          className="absolute right-5 bottom-6 z-10 text-2xl tracking-tight italic sm:right-10 sm:bottom-8 sm:text-5xl"
+          className="font-organic absolute right-5 bottom-6 z-10 text-5xl leading-none sm:right-10 sm:bottom-8 sm:text-7xl"
         >
           {profile.role}
         </motion.p>
@@ -150,23 +137,14 @@ export function CharacterIntro() {
         <div className="absolute inset-0 flex items-end justify-center">
           <motion.div
             ref={figure}
-            initial={reduce ? false : { y: 60, opacity: 0 }}
+            initial={{ y: 60, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ type: "spring", stiffness: 90, damping: 16, delay: 0.1 }}
             style={{
-              scale: reduce ? 1 : scale,
-              transformOrigin: `50% ${(MOUTH.cy / VIEW.h) * 100}%`,
-              aspectRatio: `${VIEW.w} / ${VIEW.h}`,
+              scale: reduce ? 1 : faceScale,
+              transformOrigin: `${(MOUTH.cx / VIEW) * 100}% ${(MOUTH.cy / VIEW) * 100}%`,
             }}
-            className="relative h-[min(82dvh,130vw)] cursor-pointer"
-            onPointerEnter={() => {
-              browLiftRaw.set(-6);
-              blushRaw.set(0.4);
-            }}
-            onPointerLeave={() => {
-              browLiftRaw.set(0);
-              blushRaw.set(0.22);
-            }}
+            className="relative aspect-square h-[min(88dvh,118vw)] cursor-pointer"
             onClick={wink}
           >
             <Character m={m} title={`Illustrated portrait of ${profile.name}`} />

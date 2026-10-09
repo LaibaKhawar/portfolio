@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Caveat, Geist, Geist_Mono, Gloock } from "next/font/google";
 import "./globals.css";
 import { FlowTransitionProvider } from "@/components/flow/FlowTransition";
 import { SmoothScroll } from "@/components/shell/SmoothScroll";
@@ -12,6 +12,10 @@ import { siteDescription, siteTitle, siteUrl } from "@/lib/site";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
+// Intro typography. Gloock stands in for Migra (commercial, not licensed for this site yet);
+// to switch, load Migra with next/font/local under the same --font-display-face variable.
+const displayFace = Gloock({ variable: "--font-display-face", weight: "400", subsets: ["latin"], display: "swap" });
+const handFace = Caveat({ variable: "--font-hand", weight: "600", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -39,7 +43,7 @@ const personJsonLd = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${displayFace.variable} ${handFace.variable} antialiased`}>
       <body className="grain min-h-dvh bg-bg text-fg">
         <a
           href="#main"
