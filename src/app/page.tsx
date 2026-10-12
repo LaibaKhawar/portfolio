@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Certificate, GraduationCap } from "@phosphor-icons/react/dist/ssr";
 import { ProjectsBand } from "@/components/sections/ProjectsBand";
 import { CharacterIntro } from "@/components/intro/CharacterIntro";
+import { BackToTop } from "@/components/shell/BackToTop";
 import { Section } from "@/components/ui/Section";
 import { ProjectCard } from "@/components/work/ProjectCard";
 import { SystemsExplorer } from "@/components/systems/SystemsExplorer";
@@ -21,6 +22,7 @@ export default function Home() {
   return (
     <>
       <CharacterIntro />
+      <BackToTop />
       <ProjectsBand />
 
       <Section

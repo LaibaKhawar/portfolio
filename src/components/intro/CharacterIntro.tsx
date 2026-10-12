@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { animate, motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
-import { ArrowDown, ArrowUp } from "@phosphor-icons/react";
+import { ArrowUp } from "@phosphor-icons/react";
 import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import { profile } from "@/content/profile";
 import { Character, MOUTH, VIEW, type CharacterMotion } from "./Character";
@@ -120,7 +120,7 @@ export function CharacterIntro() {
   };
 
   return (
-    <section ref={track} aria-label="Introduction" className={reduce ? "relative bg-royal" : "relative h-[240vh] bg-ink"}>
+    <section ref={track} id="intro" aria-label="Introduction" className={reduce ? "relative bg-royal" : "relative h-[240vh] bg-ink"}>
       <div ref={stage} className="sticky top-0 h-[100dvh] overflow-hidden bg-royal text-cream">
         <motion.p
           style={{ opacity: reduce ? 1 : chromeOpacity }}
@@ -135,21 +135,19 @@ export function CharacterIntro() {
           {profile.role}
         </motion.p>
 
-        {/* scroll cue: "scroll" with a pointer, "swipe up" on touch screens */}
+        {/* scroll cue */}
         <motion.p
           aria-hidden
           style={{ opacity: reduce ? 1 : chromeOpacity }}
           className="font-organic absolute top-16 left-5 z-10 flex items-center gap-2 text-3xl leading-none sm:top-auto sm:bottom-8 sm:left-10 sm:text-4xl"
         >
-          <span className="pointer-coarse:hidden">scroll</span>
-          <span className="hidden pointer-coarse:inline">swipe up</span>
+          scroll up
           <motion.span
-            animate={reduce ? undefined : { y: [0, 6, 0] }}
+            animate={reduce ? undefined : { y: [0, -6, 0] }}
             transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
             className="inline-flex"
           >
-            <ArrowDown size={26} weight="bold" className="pointer-coarse:hidden" />
-            <ArrowUp size={26} weight="bold" className="hidden pointer-coarse:inline" />
+            <ArrowUp size={26} weight="bold" />
           </motion.span>
         </motion.p>
 
