@@ -37,7 +37,7 @@ export function Gallery() {
 
       {shownArchive.length ? (
         <div>
-          <h2 className="text-xl font-medium text-fg">Coursework and earlier projects</h2>
+          <h2 className="font-display text-3xl text-fg">Coursework and earlier projects</h2>
           <p className="mt-2 max-w-[62ch] text-sm text-fg-muted">Smaller assignments and experiments, kept for completeness. Each links to its repository.</p>
           <ul className="mt-6 grid grid-cols-1 gap-x-8 sm:grid-cols-2">
             {shownArchive.map((p) => (

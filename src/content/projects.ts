@@ -78,6 +78,70 @@ export const repoUrl = (p: Project) => (p.repo ? `${GITHUB}/${p.repo}` : undefin
 export const projects: Project[] = [
   // ───────────────────────────── Case studies ─────────────────────────────
   {
+    slug: "voice-patient-registration",
+    title: "Voice AI Patient Registration",
+    repo: "voice-ai-patient-registration",
+    tagline: "Call a phone number and register as a new patient by talking to an AI intake agent.",
+    categories: ["Agentic AI", "Generative AI", "Full-Stack"],
+    tech: ["Vapi", "GPT-4.1", "Deepgram nova-3", "FastAPI", "Pydantic v2", "PostgreSQL", "SQLAlchemy 2", "Alembic", "Next.js", "Docker", "Render"],
+    tier: "case-study",
+    year: "2026",
+    status: "Deployed on Render with a live U.S. phone number; the REST API documentation is public and patient data requires an access key.",
+    liveUrl: "https://voice-ai-patient-registration-9cd2.onrender.com/docs",
+    overview:
+      "A voice agent that registers U.S. patients over the phone. It collects the standard demographic dataset conversationally, validates every answer, reads the record back, and saves to PostgreSQL only after the caller confirms. Staff see registrations and call transcripts through an authenticated REST API and an admin dashboard.",
+    problem:
+      "An LLM is good at conversation but cannot be trusted to keep a record correct: it can skip steps, mishear names, alter values, or claim a save that never happened. Patient intake needs every field valid and nothing written without explicit confirmation.",
+    solution:
+      "The model handles natural language; the server owns the conversation state. Every captured value goes through a tool that validates it with the same rules as the API and stores it in a per-call draft. A review tool reads the exact draft back and records its hash, and the save tool refuses to write unless the caller confirmed and the draft is unchanged since that read-back. Saves are idempotent per call, so a retried tool call cannot create a duplicate patient.",
+    features: [
+      "Phone intake through Vapi: Deepgram nova-3 speech recognition, GPT-4.1 with tool calling, text-to-speech, and barge-in.",
+      "Server-side registration state machine: validate on capture, read back, confirm, then save.",
+      "Returning-caller flow: a known phone number triggers date-of-birth verification before any name is revealed.",
+      "Handles corrections, out-of-order answers, silence, dropped calls, and Spanish-speaking callers.",
+      "REST API with filters, pagination, partial updates, and soft delete, plus a Next.js admin dashboard served by the same container.",
+      "PII masked in logs by default; the webhook and the dashboard are authenticated separately.",
+    ],
+    challenges: [
+      "Live calls showed the model skipping the optional-fields question while claiming it had asked. The server now enforces that step instead of trusting a flag set by the model.",
+      "Speech recognition misheard surnames and cities, so the agent asks for spellings one at a time and questions implausible place names.",
+      "The model once altered a spoken birth year; it is now told never to change values, with the read-back and confirmation as the backstop.",
+    ],
+    decisions: [
+      "Keep correctness in code, not in the prompt: one validation module is shared by the API schemas and the voice tools.",
+      "PostgreSQL CHECK constraints, enums, and partial indexes as a second line of validation behind Pydantic.",
+      "One Docker image serving the API and the static dashboard, so the browser never holds the API key and there is no CORS surface.",
+    ],
+    results: [
+      { label: "Automated tests", value: "98 passed", context: "Against real PostgreSQL, locally and in GitHub Actions CI", source: "voice-ai-patient-registration/README.md, Testing" },
+      { label: "Live phone calls", value: "7 calls, 5 registrations", context: "To the production number on 2026-10-10, exercising validation, corrections, and redirects", source: "voice-ai-patient-registration/README.md, Testing" },
+    ],
+    limitations: [
+      "Not HIPAA-compliant: Vapi and OpenAI process audio and text without a BAA in this setup.",
+      "A single shared admin key rather than per-user accounts.",
+      "Hosted on free tiers, so the first request after a long idle period can be slow.",
+    ],
+    architecture: {
+      nodes: [
+        { id: "caller", label: "Caller", detail: "A patient phoning the clinic number.", stage: 0, kind: "input" },
+        { id: "stt", label: "Deepgram STT", detail: "nova-3, multilingual, inside Vapi.", stage: 1, kind: "model" },
+        { id: "llm", label: "GPT-4.1 agent", detail: "System prompt plus tool calls, hosted by Vapi.", stage: 2, kind: "model" },
+        { id: "hook", label: "FastAPI webhook", detail: "Authenticated with a shared secret; dispatches tool calls.", stage: 3, kind: "logic" },
+        { id: "fsm", label: "Registration state", detail: "Per-call draft, validation, read-back hash, confirm-before-save.", stage: 4, kind: "logic" },
+        { id: "db", label: "PostgreSQL", detail: "Patients and call sessions, with CHECK constraints.", stage: 5, kind: "store" },
+        { id: "staff", label: "Staff dashboard", detail: "Registrations and transcripts via the REST API.", stage: 6, kind: "human" },
+      ],
+      edges: [
+        { from: "caller", to: "stt", label: "speech" },
+        { from: "stt", to: "llm" },
+        { from: "llm", to: "hook", label: "tools" },
+        { from: "hook", to: "fsm" },
+        { from: "fsm", to: "db", label: "save" },
+        { from: "db", to: "staff" },
+      ],
+    },
+  },
+  {
     slug: "veriflow",
     title: "Veriflow",
     repo: "AgenticAIPlatform",

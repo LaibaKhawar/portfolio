@@ -66,7 +66,7 @@ export function ProjectCard({ p, size = "standard", className }: { p: Project; s
             <span key={c}>{c}</span>
           ))}
         </div>
-        <h3 className={cx("font-medium tracking-tight text-fg", size === "feature" ? "text-2xl" : "text-lg")}>
+        <h3 className={cx("font-display tracking-tight text-fg", size === "feature" ? "text-3xl" : "text-2xl")}>
           <FlowLink href={`/work/${p.slug}`} originRef={ref} className="after:absolute after:inset-0 after:content-['']">
             {p.title}
           </FlowLink>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { animate, motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
+import { ArrowDown, ArrowUp } from "@phosphor-icons/react";
 import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import { profile } from "@/content/profile";
 import { Character, MOUTH, VIEW, type CharacterMotion } from "./Character";
@@ -132,6 +133,24 @@ export function CharacterIntro() {
           className="font-organic absolute right-5 bottom-6 z-10 text-5xl leading-none sm:right-10 sm:bottom-8 sm:text-7xl"
         >
           {profile.role}
+        </motion.p>
+
+        {/* scroll cue: "scroll" with a pointer, "swipe up" on touch screens */}
+        <motion.p
+          aria-hidden
+          style={{ opacity: reduce ? 1 : chromeOpacity }}
+          className="font-organic absolute top-16 left-5 z-10 flex items-center gap-2 text-3xl leading-none sm:top-auto sm:bottom-8 sm:left-10 sm:text-4xl"
+        >
+          <span className="pointer-coarse:hidden">scroll</span>
+          <span className="hidden pointer-coarse:inline">swipe up</span>
+          <motion.span
+            animate={reduce ? undefined : { y: [0, 6, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            className="inline-flex"
+          >
+            <ArrowDown size={26} weight="bold" className="pointer-coarse:hidden" />
+            <ArrowUp size={26} weight="bold" className="hidden pointer-coarse:inline" />
+          </motion.span>
         </motion.p>
 
         <div className="absolute inset-0 flex items-end justify-center">

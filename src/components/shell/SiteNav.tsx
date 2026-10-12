@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { List, X } from "@phosphor-icons/react";
-import { buttonClass, cx } from "@/components/ui/primitives";
+import { buttonClass, cx, iconButtonClass } from "@/components/ui/primitives";
 import { FlowLink } from "@/components/flow/FlowLink";
 
 const links = [
@@ -40,8 +40,8 @@ export function SiteNav() {
           "glass",
         )}
       >
-        <FlowLink href="/" className="font-mono text-sm tracking-tight text-fg" aria-label="Laiba Khawar, home">
-          laiba<span className="text-red">.</span>khawar
+        <FlowLink href="/" className="font-display text-xl text-fg" aria-label="Laiba Khawar, home">
+          Laiba Khawar<span className="text-red">.</span>
         </FlowLink>
 
         <ul className="hidden items-center gap-1 md:flex">
@@ -64,7 +64,7 @@ export function SiteNav() {
           </Link>
           <button
             type="button"
-            className={buttonClass("quiet", "size-10 p-0 md:hidden")}
+            className={iconButtonClass("quiet", "md:hidden")}
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}

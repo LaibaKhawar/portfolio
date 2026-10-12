@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Certificate, GraduationCap } from "@phosphor-icons/react/dist/ssr";
-import { Hero } from "@/components/hero/Hero";
+import { ProjectsBand } from "@/components/sections/ProjectsBand";
 import { CharacterIntro } from "@/components/intro/CharacterIntro";
 import { Section } from "@/components/ui/Section";
 import { ProjectCard } from "@/components/work/ProjectCard";
@@ -15,31 +15,13 @@ import { caseStudies, cards, projects } from "@/content/projects";
 import { certifications, education, profile } from "@/content/profile";
 
 export default function Home() {
-  const [lead, ...restCases] = caseStudies;
   const demoCards = cards.filter((p) => p.demo);
   const publicCount = projects.filter((p) => p.repo).length;
 
   return (
     <>
       <CharacterIntro />
-      <Hero />
-
-      <Section
-        id="work"
-        title="Selected work"
-        intro="Systems I designed and built, from agent orchestration and retrieval to models trained from scratch. Each one opens into a case study with its architecture, decisions, and recorded results."
-      >
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-6">
-          <InView className="lg:col-span-4 lg:row-span-2">
-            <ProjectCard p={lead} size="feature" className="h-full" />
-          </InView>
-          {restCases.map((p, i) => (
-            <InView key={p.slug} className="lg:col-span-2" delay={0.05 * (i % 3)}>
-              <ProjectCard p={p} className="h-full" />
-            </InView>
-          ))}
-        </div>
-      </Section>
+      <ProjectsBand />
 
       <Section
         id="systems"
@@ -93,7 +75,7 @@ export default function Home() {
       <section aria-labelledby="edu-title" className="mx-auto w-full max-w-[1400px] px-4 pb-24 sm:px-6 lg:px-10">
         <div className="grid grid-cols-1 gap-10 border-t border-line pt-14 md:grid-cols-2">
           <InView>
-            <h2 id="edu-title" className="flex items-center gap-2.5 text-xl font-medium text-fg">
+            <h2 id="edu-title" className="font-display flex items-center gap-2.5 text-3xl text-fg">
               <GraduationCap size={22} className="text-accent" aria-hidden /> Education
             </h2>
             <ul className="mt-6 grid gap-6">
@@ -110,7 +92,7 @@ export default function Home() {
             </ul>
           </InView>
           <InView delay={0.05}>
-            <h2 className="flex items-center gap-2.5 text-xl font-medium text-fg">
+            <h2 className="font-display flex items-center gap-2.5 text-3xl text-fg">
               <Certificate size={22} className="text-accent" aria-hidden /> Certifications
             </h2>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2">

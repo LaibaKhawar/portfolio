@@ -18,6 +18,16 @@ export function buttonClass(variant: ButtonVariant = "ghost", extra?: string) {
   return cx(buttonBase, buttonVariants[variant], extra);
 }
 
+/** Square icon button. Separate from buttonClass so variant padding cannot squeeze the icon. */
+export function iconButtonClass(variant: "ghost" | "quiet" = "ghost", extra?: string) {
+  return cx(
+    buttonBase,
+    "size-11 shrink-0 p-0",
+    variant === "ghost" ? "border border-line-strong text-fg hover:border-fg-muted hover:bg-fg/[0.06]" : "text-fg-muted hover:bg-fg/[0.06] hover:text-fg",
+    extra,
+  );
+}
+
 export function Button({ variant = "ghost", className, ...rest }: ComponentProps<"button"> & { variant?: ButtonVariant }) {
   return <button type="button" className={buttonClass(variant, className)} {...rest} />;
 }

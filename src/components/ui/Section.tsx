@@ -6,7 +6,7 @@ export function Section({ id, title, intro, children, className }: { id?: string
   return (
     <section id={id} aria-labelledby={id ? `${id}-title` : undefined} className={cx("mx-auto w-full max-w-[1400px] scroll-mt-24 px-4 py-24 sm:px-6 md:py-32 lg:px-10", className)}>
       <InView>
-        <h2 id={id ? `${id}-title` : undefined} className="max-w-3xl text-3xl font-semibold tracking-tighter text-fg sm:text-4xl md:text-5xl">
+        <h2 id={id ? `${id}-title` : undefined} className="font-display max-w-3xl text-4xl leading-[1.05] tracking-tight text-fg sm:text-5xl md:text-6xl">
           {title}
         </h2>
         {intro ? <div className="mt-4 max-w-[62ch] text-base leading-relaxed text-fg-muted">{intro}</div> : null}

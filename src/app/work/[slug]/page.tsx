@@ -91,7 +91,7 @@ function CaseStudy({ slug }: { slug: string }) {
               <span key={c}>{c}</span>
             ))}
           </div>
-          <WordReveal as="h1" text={p.title} className="mt-4 block text-4xl leading-[1.05] font-semibold tracking-tighter text-fg sm:text-5xl md:text-6xl" />
+          <WordReveal as="h1" text={p.title} className="font-display mt-4 block text-5xl leading-[1.02] tracking-tight text-fg sm:text-6xl md:text-7xl" />
           <p className="mt-5 max-w-[56ch] text-lg leading-relaxed text-fg-muted">{p.tagline}</p>
         </div>
         <div className="grid gap-4 lg:justify-items-end">
@@ -212,7 +212,7 @@ function CaseStudy({ slug }: { slug: string }) {
       {next && next.slug !== p.slug ? (
         <nav aria-label="Next project" className="mt-24 border-t border-line pt-10">
           <div className="text-xs text-fg-faint">Next project</div>
-          <FlowLink href={`/work/${next.slug}`} className="group mt-3 inline-flex items-center gap-3 text-3xl font-semibold tracking-tighter text-fg hover:text-accent sm:text-4xl">
+          <FlowLink href={`/work/${next.slug}`} className="font-display group mt-3 inline-flex items-center gap-3 text-4xl tracking-tight text-fg hover:text-accent sm:text-5xl">
             {next.title}
             <ArrowUpRight size={28} aria-hidden className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
           </FlowLink>

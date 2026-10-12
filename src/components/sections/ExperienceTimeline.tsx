@@ -30,7 +30,7 @@ export function ExperienceTimeline() {
             <div className="mt-1 hidden md:block">{r.location}</div>
           </div>
           <InView className="md:pl-8">
-            <h3 className="text-xl font-medium tracking-tight text-fg">
+            <h3 className="font-display text-2xl tracking-tight text-fg">
               {r.title}
               <span className="text-fg-muted">, {r.company}</span>
             </h3>
