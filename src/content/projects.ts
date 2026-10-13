@@ -60,6 +60,7 @@ export type Project = {
   demo?: DemoKey;
   demoNote?: string;
   cover?: { src: string; alt: string };
+  gallery?: { src: string; alt: string; caption?: string }[];
   video?: { src: string; poster: string; label: string };
   overview?: string;
   problem?: string;
@@ -77,6 +78,78 @@ export const repoUrl = (p: Project) => (p.repo ? `${GITHUB}/${p.repo}` : undefin
 
 export const projects: Project[] = [
   // ───────────────────────────── Case studies ─────────────────────────────
+  {
+    slug: "analystos",
+    title: "AnalystOS",
+    repo: "AnalystOS",
+    tagline: "An autonomous data analyst that shows its work: every number in an answer traces back to the query that produced it.",
+    categories: ["Agentic AI", "Generative AI", "Data Engineering", "Full-Stack"],
+    tech: ["FastAPI", "Celery", "Redis", "PostgreSQL", "pgvector", "DuckDB", "sqlglot", "Docker sandbox", "Ollama", "Qwen3 8B", "React", "OpenTelemetry"],
+    tier: "case-study",
+    year: "2026",
+    status: "Complete, with a public read-only replay of real analyses; asking new questions needs the backend (Docker Compose).",
+    liveUrl: "https://laibakhawar.github.io/AnalystOS/",
+    cover: { src: "/projects/analystos-workspace.jpg", alt: "AnalystOS workspace: an anomaly analysis with each fact marked verified and its evidence count" },
+    gallery: [{ src: "/projects/analystos-evidence.jpg", alt: "Evidence drawer showing the SQL and rows behind one claim", caption: "One click shows the SQL, formula, and rows behind a claim." }],
+    overview:
+      "Upload a CSV or Excel workbook, or connect PostgreSQL, MySQL, or SQLite, and ask a business question. AnalystOS plans a multi-step analysis, runs validated read-only SQL and sandboxed Python, detects anomalies, breaks changes down into their drivers, draws charts, and writes a report.",
+    problem:
+      "Chat-with-your-data tools let a language model do arithmetic and state numbers it never computed. For business decisions, a confident wrong number is worse than no answer, and generated SQL and code are a safety risk in their own right.",
+    solution:
+      "The model plans; deterministic tools compute. Tools emit findings with values, formulas, entities, and periods, and the drafted answer is verified sentence by sentence against them: numbers that do not trace to a finding are removed. SQL is validated on its syntax tree and run in read-only sessions, and generated Python runs in an isolated container with no network.",
+    features: [
+      "Agent loop of plan, execute, observe, and revise over 18 typed tools, with conversation memory and clarifying questions.",
+      "Scope check that catches plans adding filters nobody asked for or dropping a period the question named.",
+      "SQL validation with sqlglot (single read statement, no DML or DDL, allowlists, PII columns count-only) plus read-only database sessions.",
+      "Sandboxed Python in an ephemeral Docker container: no network, read-only filesystem, non-root, CPU, memory, and time limits.",
+      "Statistics, anomaly detection (z-score, IQR, seasonal baselines, Isolation Forest), contribution analysis, charts, and HTML, PDF, and Excel reports.",
+      "Scheduled analyses with alerts, team roles and sharing, and OpenTelemetry traces, Prometheus metrics, and a Grafana dashboard.",
+    ],
+    challenges: [
+      "Ollama's default 4,096-token context silently truncated prompts, so the 8B model invented column names until the context was raised to 16K.",
+      "The benchmark exposed real bugs, each fixed with a regression test: dropped periods, a number computed over all years accepted for a one-year sentence, and NaN values breaking JSON storage.",
+    ],
+    decisions: [
+      "The language model never does arithmetic; trust comes from deterministic findings and verification, not from the model.",
+      "Measure, don't estimate: a 67-case benchmark on five datasets, run repeatedly, with every failure listed and explained.",
+      "One OpenAI-compatible interface, so local models (Ollama), hosted GPUs (vLLM on Modal), and commercial APIs are interchangeable.",
+    ],
+    results: [
+      { label: "Benchmark pass rate", value: "93.3%", context: "67 cases on five datasets, mean of 2 runs, Qwen3 8B running locally", source: "AnalystOS/README.md, Evaluation results" },
+      { label: "Unsupported numbers in final answers", value: "0%", context: "Down from 2.4% in model first drafts; 0% across all four models compared", source: "AnalystOS/README.md, Evaluation results" },
+      { label: "Unsafe SQL executed", value: "0", context: "Safety cases passed 5 / 5 in both runs", source: "AnalystOS/README.md, Evaluation results" },
+      { label: "Automated tests", value: "369 passed", context: "195 backend unit, 52 integration, 122 frontend unit, plus end-to-end", source: "AnalystOS/README.md, Test report" },
+    ],
+    limitations: [
+      "Model quality drives answer quality: verification guarantees shown numbers are traceable, not that the agent asked the best question of the data.",
+      "Analyses take one to four minutes with an 8B model on a laptop GPU; hosted models are much faster.",
+      "Verification is lexical, so a correct number paired with a misleading description can slip through, though it stays auditable.",
+    ],
+    architecture: {
+      nodes: [
+        { id: "ui", label: "React app", detail: "Question, plan, live steps, verified answer, evidence drawer.", stage: 0, kind: "input" },
+        { id: "api", label: "FastAPI", detail: "REST plus server-sent events; enqueues analyses.", stage: 1, kind: "logic" },
+        { id: "worker", label: "Celery worker", detail: "Runs the orchestrator off the request path.", stage: 2, kind: "logic" },
+        { id: "orc", label: "Orchestrator", detail: "Plan, execute, revise, and verify.", stage: 3, kind: "model" },
+        { id: "llm", label: "LLM", detail: "Any OpenAI-compatible model; Qwen3 8B by default.", stage: 4, kind: "model" },
+        { id: "sql", label: "SQL validator", detail: "sqlglot syntax-tree checks, read-only sessions.", stage: 4, kind: "logic" },
+        { id: "box", label: "Python sandbox", detail: "Docker container with no network, or Modal.", stage: 4, kind: "logic" },
+        { id: "pg", label: "PostgreSQL", detail: "Plans, findings, claims, and evidence provenance.", stage: 5, kind: "store" },
+        { id: "answer", label: "Verified report", detail: "Every number traced to a finding.", stage: 6, kind: "output" },
+      ],
+      edges: [
+        { from: "ui", to: "api" },
+        { from: "api", to: "worker", label: "queue" },
+        { from: "worker", to: "orc" },
+        { from: "orc", to: "llm", label: "plan" },
+        { from: "orc", to: "sql", label: "tools" },
+        { from: "orc", to: "box" },
+        { from: "sql", to: "pg" },
+        { from: "box", to: "pg" },
+        { from: "pg", to: "answer", label: "verify" },
+      ],
+    },
+  },
   {
     slug: "voice-patient-registration",
     title: "Voice AI Patient Registration",
@@ -741,18 +814,8 @@ export const allCategories: Category[] = Array.from(new Set(projects.flatMap((p)
 // Additional resume projects whose code is not public. Shown without links.
 export const resumeProjects = [
   {
-    title: "Conversational RAG Chatbot",
-    tech: ["Python", "LLaMA", "FAISS", "LangChain"],
-    text: "Chunking, embeddings, vector search, reranking, conversation memory, and query rewriting for grounded multi-turn question answering.",
-  },
-  {
-    title: "Research Paper Agent",
-    tech: ["Python", "LLM agents", "RAG"],
-    text: "A tool-calling agent for PDF parsing, semantic search, structured summarization, and retrieval-augmented question answering.",
-  },
-  {
-    title: "Zero-Shot Recognition, Captioning, and Real-Time Detection",
-    tech: ["PyTorch", "Hugging Face", "CLIP", "OpenCV"],
-    text: "CLIP-based zero-shot recognition with transformer captioning, plus CNN face-mask and emotion models optimized for low-latency webcam inference.",
+    title: "Conversational RAG and Research Paper Agent",
+    tech: ["FAISS", "Embeddings", "Reranking", "Tool calling"],
+    text: "Document question answering with FAISS, embeddings, reranking, query rewriting, conversation memory, PDF parsing, summarization, and tool calling.",
   },
 ];

@@ -16,7 +16,8 @@ const corridorProjects: CorridorProject[] = projects
     tagline: p.tagline,
     categories: p.categories,
     tech: p.tech,
-    cover: p.cover ? { src: p.cover.src } : undefined,
+    // compact copies made for the carousel (public/projects/thumbs); case studies use the originals
+    cover: p.cover ? { src: `/projects/thumbs/${p.cover.src.split("/").pop()!.replace(/\.\w+$/, "")}.jpg` } : undefined,
     demo: p.demo,
     liveUrl: p.liveUrl,
     href: `/work/${p.slug}`,
@@ -27,8 +28,9 @@ const corridorProjects: CorridorProject[] = projects
 const shipped = [
   { name: "Customer Memory Graph", where: "Hyperengage, at Dataspecc", href: "/#experience" },
   { name: "PVS-LLM report intelligence", where: "SysReforms International", href: "/#experience" },
+  { name: "AnalystOS", where: "Autonomous data analyst, verified numbers", href: "/work/analystos" },
+  { name: "Veriflow agent platform", where: "Seven agents, evidence-verified claims", href: "/work/veriflow" },
   { name: "Voice AI patient registration", where: "Phone agent, Vapi + FastAPI", href: "/work/voice-patient-registration" },
-  { name: "Veriflow agent platform", where: "Evidence-verified agents", href: "/work/veriflow" },
   { name: "EDIConnect", where: "Final-year project, LLaMA 3.1", href: "/work/ediconnect" },
 ];
 
@@ -49,7 +51,7 @@ export function ProjectsBand() {
             <WordReveal text={profile.name} />
           </h1>
           <p className="mt-6 max-w-[58ch] text-lg leading-relaxed text-fg-muted sm:text-xl">
-            I build production LLM systems that retrieve, reason, and verify: a customer-memory graph for Hyperengage, PVS-LLM for turning veterinary and public-health reports into structured insights, and a voice agent that registers patients over the phone.
+            I build LLM applications and autonomous agents that show their work: a customer-memory graph for Hyperengage, PVS-LLM pipelines at SysReforms, a data-analyst agent that verifies every number, and a voice agent that registers patients by phone.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-2">
             <a href={profile.resume} target="_blank" rel="noreferrer" className={buttonClass("primary", "px-5 py-2.5 sm:px-6 sm:py-3")}>
@@ -77,7 +79,7 @@ export function ProjectsBand() {
                   <span className="min-w-0">
                     <span className="flex items-center gap-2">
                       <span className="font-display text-xl text-fg">{r.company}</span>
-                      {i === 0 ? <span className="rounded-full bg-red px-2 py-0.5 text-[10px] font-semibold tracking-wide text-ink uppercase">Now</span> : null}
+                      {i === 0 ? <span className="rounded-full bg-red px-2 py-0.5 text-[10px] font-semibold tracking-wide text-[#2a2020] uppercase">Now</span> : null}
                     </span>
                     <span className="mt-0.5 block text-sm text-fg-muted">{r.title}</span>
                   </span>
@@ -93,7 +95,7 @@ export function ProjectsBand() {
         {/* what I have shipped */}
         <InView className="lg:col-span-12">
           <h2 className="text-sm text-fg-faint">Systems I have built</h2>
-          <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5">
+          <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {shipped.map((s) => (
               <li key={s.name}>
                 <FlowLink href={s.href} className="group flex h-full items-start justify-between gap-3 rounded-card border border-line px-4 py-3 transition-colors hover:border-red/70">

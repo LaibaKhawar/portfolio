@@ -294,7 +294,7 @@ export function RetrievalLab() {
                   <Stat label="Chunks" value={result.hits.length} />
                   <Stat label="Approx. tokens" value={estimateTokens(context)} />
                 </div>
-                <pre data-lenis-prevent className="mt-3 max-h-64 overflow-auto rounded-input bg-bg p-3 font-mono text-[11px] leading-relaxed whitespace-pre-wrap text-fg-muted">
+                <pre data-lenis-prevent tabIndex={0} aria-label="Assembled context window" className="mt-3 max-h-64 overflow-auto rounded-input bg-bg p-3 font-mono text-[11px] leading-relaxed whitespace-pre-wrap text-fg-muted">
                   {context}
                 </pre>
               </div>

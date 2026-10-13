@@ -16,11 +16,12 @@ export default function LabPage() {
   const demos = projects.filter((p) => p.demo);
   return (
     <>
-      <Section
+      <Section level={1}
         title="Retrieval lab"
         intro="Ask a question about my work and watch how a RAG system would find the context: keyword search, embedding search, the fusion of both, and a graph step that pulls in related work through shared entities."
         className="pt-36"
       >
+        <h2 className="sr-only">Hybrid retrieval demo</h2>
         <RetrievalLab />
       </Section>
 

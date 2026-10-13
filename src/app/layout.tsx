@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Caveat, Geist, Geist_Mono, Gloock } from "next/font/google";
 import "./globals.css";
 import { FlowTransitionProvider } from "@/components/flow/FlowTransition";
@@ -61,6 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </SmoothScroll>
         </FlowTransitionProvider>
         <Cursor />
+        <Analytics />
         </MotionPrefs>
       </body>
     </html>

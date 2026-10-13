@@ -143,7 +143,7 @@ function paintPage(ctx: CanvasRenderingContext2D, p: PageProject, i: number, tot
     ctx.fillStyle = COLORS.red;
     roundRect(ctx, tx, fy - 1.2 * u, tw, 4.8 * u, 2.4 * u);
     ctx.fill();
-    ctx.fillStyle = COLORS.ink; // brown on coral reads at 4.3:1; cream would not
+    ctx.fillStyle = "#2a2020"; // near-black brown on coral passes 4.5:1; cream would not
     ctx.fillText(tag, tx + 1.5 * u, fy);
   }
   ctx.fillStyle = t.accent;

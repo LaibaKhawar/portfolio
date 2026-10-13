@@ -136,6 +136,19 @@ function CaseStudy({ slug }: { slug: string }) {
         </InView>
       ) : null}
 
+      {p.gallery?.length ? (
+        <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+          {p.gallery.map((g) => (
+            <figure key={g.src}>
+              <div className="relative aspect-[16/10] overflow-hidden rounded-card border border-line bg-bg-raised">
+                <Image src={g.src} alt={g.alt} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover object-top" />
+              </div>
+              {g.caption ? <figcaption className="mt-2 text-sm text-fg-faint">{g.caption}</figcaption> : null}
+            </figure>
+          ))}
+        </div>
+      ) : null}
+
       <div className="mt-16 grid grid-cols-1 gap-14">
         {p.overview ? (
           <Block title="Overview">

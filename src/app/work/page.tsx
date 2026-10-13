@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function WorkPage() {
   return (
     <>
-      <Section title="Work" intro="Every public project, grouped by area. Live demos run in your browser; results are quoted from the notebooks and READMEs that recorded them." className="pt-36">
+      <Section level={1} title="Work" intro="Every public project, grouped by area. Live demos run in your browser; results are quoted from the notebooks and READMEs that recorded them." className="pt-36">
         <Gallery />
       </Section>
       <section aria-labelledby="private-title" className="mx-auto w-full max-w-[1400px] px-4 pb-28 sm:px-6 lg:px-10">

@@ -14,6 +14,7 @@
     "@phosphor-icons/react": "^2.1.10",
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.1",
+    "@vercel/analytics": "^2.0.1",
     "@xyflow/react": "^12.12.0",
     "geist": "^1.7.2",
     "html2canvas": "^1.4.1",

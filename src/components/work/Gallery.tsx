@@ -27,6 +27,7 @@ export function Gallery() {
         {shown.length + shownArchive.length} projects shown
       </p>
 
+      <h2 className="sr-only">Projects</h2>
       {shown.length ? (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {shown.map((p) => (

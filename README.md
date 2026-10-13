@@ -37,19 +37,24 @@ npm test
    - `tier: "card"` appears in the gallery; `tier: "archive"` appears in the coursework list.
    - Only add `results` that are recorded in a README or notebook output, and say where in `source`.
    - Only set `liveUrl` for a deployment that responds.
-2. Optional: add an image to `public/projects/` and set `cover`.
+2. Optional: add an image to `public/projects/` and set `cover`. The projects carousel loads a compact copy from `public/projects/thumbs/<name>.jpg`; create it with `ffmpeg -i public/projects/<file> -vf "scale='min(640,iw)':-2" -q:v 4 public/projects/thumbs/<name>.jpg`.
 3. Optional: build a demo in `src/components/demos/<key>/`, add the key to `DemoKey`, and register it in `registry.tsx`.
 
 The gallery, case-study page, sitemap, skills explorer, and retrieval lab pick the entry up automatically.
 
 ## Contact form
 
-`/api/contact` validates input with zod, rate-limits per IP, and ignores honeypot submissions. It sends email through [Resend](https://resend.com) when `RESEND_API_KEY` is set (see `.env.example`). Without it, the form tells the visitor and opens their email app with the message filled in.
+`/api/contact` validates input with zod, rate-limits per IP, and ignores honeypot submissions, then delivers the message to `CONTACT_TO` (default: the email in `profile.ts`):
+
+- With `RESEND_API_KEY` set, through [Resend](https://resend.com).
+- Otherwise through [FormSubmit](https://formsubmit.co), which needs no account. The first message sends a one-time confirmation email to the recipient; messages sent before it is confirmed are held and delivered afterwards.
+
+If delivery fails, the form tells the visitor and opens their email app with the message filled in.
 
 ## Accessibility and motion
 
 - `prefers-reduced-motion`: page transitions, smooth scrolling, the custom cursor, and hero animation are turned off or reduced to a still frame.
-- No WebGL: the hero network is omitted, the transition falls back to a CSS clip-path, and glass falls back to a CSS backdrop filter.
+- No WebGL: the projects carousel becomes a plain list, the transition falls back to a CSS clip-path, and glass falls back to a CSS backdrop filter.
 - `prefers-reduced-transparency`: glass surfaces become solid.
 
 ## Credits

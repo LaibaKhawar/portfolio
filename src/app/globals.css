@@ -22,7 +22,7 @@
   --line-strong: rgba(65, 51, 51, 0.24);
   --fg: var(--ink);
   --fg-muted: #5e4c4a;
-  --fg-faint: #7a6662;
+  --fg-faint: #6f5b57; /* 4.99:1 on surface, 5.4:1 on cream */
   --accent: var(--royal);
   --accent-soft: rgba(49, 91, 140, 0.12);
   --accent-ink: var(--cream);
