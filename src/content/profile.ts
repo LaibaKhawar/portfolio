@@ -7,7 +7,7 @@ export const profile = {
   focus: ["Generative AI", "LLM Systems", "RAG", "Agentic AI"],
   location: "Islamabad, Pakistan",
   email: "laibakhawar7@gmail.com",
-  linkedin: "https://www.linkedin.com/in/laiba-k",
+  linkedin: "https://www.linkedin.com/in/laibakhawar/",
   github: "https://github.com/LaibaKhawar",
   resume: "/Laiba_Khawar_Resume.pdf",
   summary:
