@@ -9,6 +9,20 @@ import { Button, ErrorNote, Field, inputClass } from "@/components/ui/primitives
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
 type Status = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind: "fallback"; href: string } | { kind: "error"; message: string };
 
+async function relayFromBrowser(data: { name: string; email: string; message: string }) {
+  try {
+    const res = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ name: data.name, email: data.email, message: data.message, _replyto: data.email, _subject: `Portfolio message from ${data.name}`, _template: "table", _captcha: "false" }),
+    });
+    const json = (await res.json().catch(() => ({}))) as { success?: string | boolean; message?: string };
+    return res.ok && (json.success === true || json.success === "true" || /activat|confirm/i.test(json.message ?? ""));
+  } catch {
+    return false;
+  }
+}
+
 export function ContactForm() {
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>({ kind: "idle" });
@@ -38,6 +52,12 @@ export function ContactForm() {
         setStatus({ kind: "sent" });
         form.reset();
       } else if (res.status === 503 && json.configured === false) {
+        // The server relay could not deliver; FormSubmit also accepts posts straight from the browser.
+        if (await relayFromBrowser(parsed.data)) {
+          setStatus({ kind: "sent" });
+          form.reset();
+          return;
+        }
         const href = `mailto:${profile.email}?subject=${encodeURIComponent(`Hello from ${parsed.data.name}`)}&body=${encodeURIComponent(`${parsed.data.message}\n\n${parsed.data.name} (${parsed.data.email})`)}`;
         setStatus({ kind: "fallback", href });
         window.location.href = href;

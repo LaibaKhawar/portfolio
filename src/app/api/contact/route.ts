@@ -75,7 +75,7 @@ export async function POST(request: Request) {
     const json = (await res.json().catch(() => ({}))) as { success?: string | boolean; message?: string };
     const accepted = res.ok && (json.success === true || json.success === "true" || /activat|confirm/i.test(json.message ?? ""));
     if (accepted) return Response.json({ ok: true });
-    console.error("contact delivery failed", res.status, json.message);
+    console.error("contact delivery failed", res.status, json.message ?? "(no JSON body)");
   } catch (err) {
     console.error("contact delivery error", err);
   }

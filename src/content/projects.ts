@@ -222,6 +222,11 @@ export const projects: Project[] = [
     categories: ["Agentic AI", "RAG and Knowledge", "Full-Stack"],
     tech: ["FastAPI", "Pydantic v2", "SQLAlchemy 2", "PostgreSQL 16", "pgvector", "Redis", "Celery", "Next.js", "TypeScript", "OpenTelemetry", "Docker Compose"],
     tier: "case-study",
+    cover: { src: "/projects/veriflow-dashboard.jpg", alt: "Veriflow dashboard: live counts of investigations, verified claims, and unsupported claims" },
+    gallery: [
+      { src: "/projects/veriflow-run.jpg", alt: "A completed churn investigation showing each workflow stage, its timing, and the verification breakdown", caption: "A completed run: every stage, its timing, and how many claims the evidence supported." },
+      { src: "/projects/veriflow-report.jpg", alt: "Report section for one account listing verified indicators, a contradicted claim that was excluded, and recommended interventions", caption: "The report keeps only verified claims; a contradicted one is listed as excluded with the reason." },
+    ],
     status: "Complete backend and frontend with a documented test suite; runs locally with Docker Compose. No public deployment.",
     overview:
       "Veriflow takes an investigation objective, such as finding which B2B SaaS customers are at risk of churning and why, and returns a report in which every claim is tied to evidence and checked before it is shown. Any customer-facing action it proposes waits for a human approval.",
