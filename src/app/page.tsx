@@ -44,11 +44,8 @@ export default function Home() {
           ))}
         </div>
         <div className="mt-10 flex flex-wrap items-center gap-4">
-          <FlowLink href="/work" className={buttonClass("ghost")}>
-            All {publicCount} public projects <ArrowRight size={16} aria-hidden />
-          </FlowLink>
-          <FlowLink href="/lab" className={buttonClass("quiet")}>
-            Open the retrieval lab
+          <FlowLink href="/projects" className={buttonClass("ghost")}>
+            All {publicCount} projects in detail <ArrowRight size={16} aria-hidden />
           </FlowLink>
         </div>
       </Section>

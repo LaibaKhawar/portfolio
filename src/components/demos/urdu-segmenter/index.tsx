@@ -169,7 +169,7 @@ export default function UrduSegmenterDemo() {
             <section aria-label="Detected sentences" className="min-w-0 rounded-card border border-line bg-bg p-3 sm:p-4">
               <h4 className="mb-1 text-xs font-medium text-fg-muted">Detected sentences</h4>
               {result.segs.length ? (
-                <ol className="max-h-[32rem] overflow-y-auto pr-1">
+                <ol tabIndex={0} aria-label="Detected sentences list" data-lenis-prevent className="max-h-[32rem] overflow-y-auto pr-1">
                   {result.segs.map((s, i) => (
                     <SentenceRow key={i} s={s} n={i + 1} />
                   ))}
@@ -181,7 +181,7 @@ export default function UrduSegmenterDemo() {
             {sample ? (
               <section aria-label="Reference segmentation" className="min-w-0 rounded-card border border-line bg-bg p-3 sm:p-4">
                 <h4 className="mb-1 text-xs font-medium text-fg-muted">Reference segmentation</h4>
-                <ol className="max-h-[32rem] overflow-y-auto pr-1">
+                <ol tabIndex={0} aria-label="Reference sentences list" data-lenis-prevent className="max-h-[32rem] overflow-y-auto pr-1">
                   {sample.reference.map((r, i) => (
                     <li key={i} className="grid grid-cols-[2rem_1fr] gap-2 border-b border-line py-2.5 last:border-b-0">
                       <span className="pt-1 font-mono text-xs text-fg-faint tabular-nums">{i + 1}</span>

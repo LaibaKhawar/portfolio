@@ -6,8 +6,8 @@
     working demo, leave it out rather than linking to a placeholder.
   - `liveUrl` is only for deployments that have been checked and respond.
   To add a project: append an entry, pick a tier, and (optionally) register a demo
-  in src/components/demos/registry.tsx. Gallery, case study pages, sitemap, and
-  the systems explorer pick it up automatically.
+  in src/components/demos/registry.tsx. The Projects page, home carousel, and
+  systems explorer pick it up automatically.
 */
 
 export type Category =

@@ -143,7 +143,7 @@ export default function BakeryDemo() {
             {running ? <Pause weight="bold" aria-hidden /> : <Play weight="bold" aria-hidden />}
             {running ? "Pause" : "Play"}
           </Button>
-          <Button variant="ghost" onClick={() => advance(1)} disabled={running} aria-label="Execute one operation">
+          <Button variant="ghost" onClick={() => advance(1)} disabled={running} aria-label="Step: execute one operation">
             <SkipForward aria-hidden />
             Step
           </Button>

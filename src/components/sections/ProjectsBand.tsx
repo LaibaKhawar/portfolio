@@ -6,6 +6,7 @@ import { MagazineCorridor, type CorridorProject } from "@/components/magazine/Ma
 import { FlowLink } from "@/components/flow/FlowLink";
 import { InView, WordReveal } from "@/components/motion/Reveal";
 import { buttonClass, iconButtonClass } from "@/components/ui/primitives";
+import { projectHref } from "@/lib/links";
 
 // Serializable page data for the corridor: every case study and card, newest first.
 const corridorProjects: CorridorProject[] = projects
@@ -20,7 +21,7 @@ const corridorProjects: CorridorProject[] = projects
     cover: p.cover ? { src: `/projects/thumbs/${p.cover.src.split("/").pop()!.replace(/\.\w+$/, "")}.jpg` } : undefined,
     demo: p.demo,
     liveUrl: p.liveUrl,
-    href: `/work/${p.slug}`,
+    href: projectHref(p.slug),
   }));
 
 // Systems a recruiter should see first. Professional work links to the experience
@@ -28,10 +29,10 @@ const corridorProjects: CorridorProject[] = projects
 const shipped = [
   { name: "Customer Memory Graph", where: "Hyperengage, at Dataspecc", href: "/#experience" },
   { name: "PVS-LLM report intelligence", where: "SysReforms International", href: "/#experience" },
-  { name: "AnalystOS", where: "Autonomous data analyst, verified numbers", href: "/work/analystos" },
-  { name: "Veriflow agent platform", where: "Seven agents, evidence-verified claims", href: "/work/veriflow" },
-  { name: "Voice AI patient registration", where: "Phone agent, Vapi + FastAPI", href: "/work/voice-patient-registration" },
-  { name: "EDIConnect", where: "Final-year project, LLaMA 3.1", href: "/work/ediconnect" },
+  { name: "AnalystOS", where: "Autonomous data analyst, verified numbers", href: projectHref("analystos") },
+  { name: "Veriflow agent platform", where: "Seven agents, evidence-verified claims", href: projectHref("veriflow") },
+  { name: "Voice AI patient registration", where: "Phone agent, Vapi + FastAPI", href: projectHref("voice-patient-registration") },
+  { name: "EDIConnect", where: "Final-year project, LLaMA 3.1", href: projectHref("ediconnect") },
 ];
 
 const degree = education[0];

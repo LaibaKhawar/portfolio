@@ -6,6 +6,7 @@ import { ArrowUpRight, Play } from "@phosphor-icons/react";
 import type { Project } from "@/content/projects";
 import { FlowLink } from "@/components/flow/FlowLink";
 import { Tag, cx } from "@/components/ui/primitives";
+import { projectHref } from "@/lib/links";
 
 /** Ordered stage labels from a project's architecture, used as a compact pipeline preview. */
 function pipeline(p: Project) {
@@ -67,7 +68,7 @@ export function ProjectCard({ p, size = "standard", className }: { p: Project; s
           ))}
         </div>
         <h3 className={cx("font-display tracking-tight text-fg", size === "feature" ? "text-3xl" : "text-2xl")}>
-          <FlowLink href={`/work/${p.slug}`} originRef={ref} className="after:absolute after:inset-0 after:content-['']">
+          <FlowLink href={projectHref(p.slug)} originRef={ref} className="after:absolute after:inset-0 after:content-['']">
             {p.title}
           </FlowLink>
         </h3>

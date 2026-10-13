@@ -8,9 +8,9 @@ import { buttonClass, cx, iconButtonClass } from "@/components/ui/primitives";
 import { FlowLink } from "@/components/flow/FlowLink";
 
 const links = [
-  { href: "/#work", label: "Work" },
+  { href: "/#work", label: "Overview" },
+  { href: "/projects", label: "Projects" },
   { href: "/#experience", label: "Experience" },
-  { href: "/lab", label: "Lab" },
   { href: "/#about", label: "About" },
 ];
 

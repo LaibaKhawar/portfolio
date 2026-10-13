@@ -163,7 +163,7 @@ export default function BridgeDemo() {
             {running ? <Pause weight="bold" aria-hidden /> : <Play weight="bold" aria-hidden />}
             {running ? "Pause" : "Play"}
           </Button>
-          <Button variant="ghost" onClick={() => advance()} disabled={running || ended} aria-label="Advance one tick">
+          <Button variant="ghost" onClick={() => advance()} disabled={running || ended} aria-label="Step: advance one tick">
             <SkipForward aria-hidden />
             Step
           </Button>

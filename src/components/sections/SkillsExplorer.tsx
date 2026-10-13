@@ -5,6 +5,7 @@ import { experience, skillGroups } from "@/content/profile";
 import { projects } from "@/content/projects";
 import { FlowLink } from "@/components/flow/FlowLink";
 import { cx } from "@/components/ui/primitives";
+import { projectHref } from "@/lib/links";
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 
@@ -64,7 +65,7 @@ export function SkillsExplorer() {
               <ul className="mt-1 grid gap-1">
                 {used.projects.map((p) => (
                   <li key={p.slug}>
-                    <FlowLink href={`/work/${p.slug}`} className="text-sm text-fg-muted underline-offset-4 hover:text-fg hover:underline">
+                    <FlowLink href={projectHref(p.slug)} className="text-sm text-fg-muted underline-offset-4 hover:text-fg hover:underline">
                       {p.title}
                     </FlowLink>
                   </li>
