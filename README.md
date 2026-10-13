@@ -16,6 +16,10 @@ Tests for the demo algorithms and the retrieval core use Node's built-in runner 
 npm test
 ```
 
+## Deployment
+
+The site is hosted on Vercel at [www.laibakhawar.com](https://www.laibakhawar.com). Every push to `main` deploys to production automatically; pushes to other branches get preview deployments.
+
 ## What is where
 
 | Path | Purpose |
