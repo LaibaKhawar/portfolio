@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowRight, Certificate, GraduationCap } from "@phosphor-icons/react/dist/ssr";
 import { ProjectsBand } from "@/components/sections/ProjectsBand";
 import { CharacterIntro } from "@/components/intro/CharacterIntro";
@@ -134,9 +133,9 @@ export default function Home() {
                   <a className="text-fg-muted hover:text-fg" href={profile.github} target="_blank" rel="noreferrer">
                     GitHub
                   </a>
-                  <Link className="text-fg-muted hover:text-fg" href={profile.resume} target="_blank">
+                  <a className="text-fg-muted hover:text-fg" href={profile.resume} target="_blank" rel="noreferrer">
                     Resume (PDF)
-                  </Link>
+                  </a>
                 </dd>
               </div>
             </dl>
