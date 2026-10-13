@@ -84,10 +84,10 @@ export const projects: Project[] = [
     repo: "AnalystOS",
     tagline: "An autonomous data analyst that shows its work: every number in an answer traces back to the query that produced it.",
     categories: ["Agentic AI", "Generative AI", "Data Engineering", "Full-Stack"],
-    tech: ["FastAPI", "Celery", "Redis", "PostgreSQL", "pgvector", "DuckDB", "sqlglot", "Docker sandbox", "Ollama", "Qwen3", "React", "OpenTelemetry", "Modal", "Vercel"],
+    tech: ["FastAPI", "Celery", "Redis", "PostgreSQL", "pgvector", "DuckDB", "sqlglot", "Docker sandbox", "Ollama", "Qwen3", "React", "OpenTelemetry", "Vercel", "Render", "Groq"],
     tier: "case-study",
     year: "2026",
-    status: "Live: deployed for free on Vercel and Modal CPU credits, so you can register and ask questions; a read-only replay of recorded analyses is also on GitHub Pages.",
+    status: "Live on free tiers (Vercel, Render, Groq), so you can register and ask questions; a read-only replay of recorded analyses is also on GitHub Pages.",
     liveUrl: "https://analystos-six.vercel.app",
     cover: { src: "/projects/analystos-workspace.jpg", alt: "AnalystOS workspace: an anomaly analysis with each fact marked verified and its evidence count" },
     gallery: [{ src: "/projects/analystos-evidence.jpg", alt: "Evidence drawer showing the SQL and rows behind one claim", caption: "One click shows the SQL, formula, and rows behind a claim." }],
@@ -114,7 +114,7 @@ export const projects: Project[] = [
       "The language model never does arithmetic; trust comes from deterministic findings and verification, not from the model.",
       "Measure, don't estimate: a 67-case benchmark on five datasets, run repeatedly, with every failure listed and explained.",
       "One OpenAI-compatible interface, so local models (Ollama), hosted GPUs (vLLM on Modal), and commercial APIs are interchangeable.",
-      "A free public deployment: Qwen3 served by llama.cpp on Modal CPU containers, the API with Postgres and Redis in one scale-to-zero container, and the frontend on Vercel.",
+      "A public deployment on free tiers with no payment card: the frontend on Vercel, the API with Postgres and Redis in one 512 MB Render container, and Qwen 3.8 27B on Groq, with rate limits waited out instead of failing.",
     ],
     results: [
       { label: "Benchmark pass rate", value: "93.3%", context: "67 cases on five datasets, mean of 2 runs, Qwen3 8B running locally", source: "AnalystOS/README.md, Evaluation results" },
@@ -124,7 +124,7 @@ export const projects: Project[] = [
     ],
     limitations: [
       "Model quality drives answer quality: verification guarantees shown numbers are traceable, not that the agent asked the best question of the data.",
-      "Speed depends on where the model runs: about 78 s per question at the median on a laptop GPU, 16 s on a hosted A10G GPU, and one to three minutes on the free CPU deployment.",
+      "Speed depends on where the model runs: about 78 s per question at the median on a laptop GPU and 16 s on a hosted A10G GPU; the free live deployment sleeps when idle and waits out the model provider's rate limits.",
       "Verification is lexical, so a correct number paired with a misleading description can slip through, though it stays auditable.",
     ],
     architecture: {
