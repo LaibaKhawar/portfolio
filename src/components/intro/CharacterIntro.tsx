@@ -44,7 +44,7 @@ export function CharacterIntro() {
     const end = need / (MOUTH.ry * k * FACE_MAX);
     return open + Math.max(0, end - open) * Math.pow(t, 2.3);
   });
-  const mouthColor = useTransform(zoomT, [0.08, 0.4], ["#c94d43", "#14204a"]);
+  const mouthColor = useTransform(zoomT, [0.08, 0.4], ["#c94d43", "#413333"]);
   const chromeOpacity = useTransform(p, [0.02, 0.14], [1, 0]);
   const cover = useTransform(p, [0.88, 0.92], [0, 1]);
 

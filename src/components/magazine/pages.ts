@@ -16,18 +16,18 @@ export type PageProject = {
 export type Cell = { rect: [number, number, number, number]; aspect: number };
 
 const COLORS = {
-  cream: "#fffabd",
-  creamDeep: "#fff3a0",
-  royal: "#4169e1",
-  red: "#d9534f",
-  ink: "#14204a",
-  inkSoft: "rgba(20, 32, 74, 0.72)",
+  cream: "#f5ebdd",
+  creamDeep: "#efe2cf",
+  royal: "#315b8c",
+  red: "#f2765e",
+  ink: "#413333",
+  inkSoft: "rgba(65, 51, 51, 0.72)",
 };
 
 // Three page styles in rotation keep the corridor rhythmic.
 const THEMES = [
   { bg: COLORS.cream, fg: COLORS.ink, soft: COLORS.inkSoft, accent: COLORS.red, rule: COLORS.royal },
-  { bg: COLORS.royal, fg: COLORS.cream, soft: "rgba(255, 250, 189, 0.82)", accent: COLORS.cream, rule: COLORS.red },
+  { bg: COLORS.royal, fg: COLORS.cream, soft: "rgba(245, 235, 221, 0.82)", accent: COLORS.cream, rule: COLORS.red },
   { bg: COLORS.creamDeep, fg: COLORS.ink, soft: COLORS.inkSoft, accent: COLORS.royal, rule: COLORS.red },
 ];
 
@@ -143,7 +143,7 @@ function paintPage(ctx: CanvasRenderingContext2D, p: PageProject, i: number, tot
     ctx.fillStyle = COLORS.red;
     roundRect(ctx, tx, fy - 1.2 * u, tw, 4.8 * u, 2.4 * u);
     ctx.fill();
-    ctx.fillStyle = COLORS.cream;
+    ctx.fillStyle = COLORS.ink; // brown on coral reads at 4.3:1; cream would not
     ctx.fillText(tag, tx + 1.5 * u, fy);
   }
   ctx.fillStyle = t.accent;

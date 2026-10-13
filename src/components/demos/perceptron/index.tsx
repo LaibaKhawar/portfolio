@@ -29,9 +29,9 @@ const DATASETS: Array<{ key: DatasetKey; label: string }> = [
 ];
 const RATES = [0.001, 0.01, 0.1, 1];
 const MAX_EPOCHS = 200;
-const ACCENT = "#4169e1";
-const NEG = "rgba(20,32,74,0.78)";
-const DANGER = "#d9534f";
+const ACCENT = "#315b8c";
+const NEG = "rgba(65, 51, 51,0.78)";
+const DANGER = "#f2765e";
 
 const SEPARABLE = trainTestSplit(generateSeparable(500, 42), 0.2, 42);
 const XOR = generateXor(200, 7);
@@ -60,7 +60,7 @@ function Sparkline({ history }: { history: number[] }) {
         role="img"
         aria-label={n ? `Errors over ${n} epochs, latest ${last}, max ${max}` : "No epochs completed yet"}
       >
-        <line x1="0" x2={W} y1={H - 4} y2={H - 4} stroke="rgba(20,32,74,0.12)" vectorEffect="non-scaling-stroke" />
+        <line x1="0" x2={W} y1={H - 4} y2={H - 4} stroke="rgba(65, 51, 51,0.12)" vectorEffect="non-scaling-stroke" />
         {n ? <path d={d} fill="none" stroke={ACCENT} strokeWidth="1.5" vectorEffect="non-scaling-stroke" /> : null}
         {n === 1 ? <circle cx={x(0)} cy={y(history[0])} r="2.5" fill={ACCENT} /> : null}
       </svg>
@@ -162,13 +162,13 @@ export default function PerceptronDemo() {
     const sx = (x: number) => pad + ((x - box.xMin) / (box.xMax - box.xMin)) * inner;
     const sy = (y: number) => 8 + (1 - (y - box.yMin) / (box.yMax - box.yMin)) * inner;
 
-    ctx.fillStyle = "#fffde4";
+    ctx.fillStyle = "#faf4eb";
     ctx.fillRect(0, 0, size, size);
 
     // Positive half-plane shading.
     const region = positiveRegion(train.model, box);
     if (region.length >= 3 && (train.model.w1 !== 0 || train.model.w2 !== 0)) {
-      ctx.fillStyle = "rgba(65,105,225,0.07)";
+      ctx.fillStyle = "rgba(49, 91, 140,0.07)";
       ctx.beginPath();
       region.forEach(([x, y], i) => (i ? ctx.lineTo(sx(x), sy(y)) : ctx.moveTo(sx(x), sy(y))));
       ctx.closePath();
@@ -176,12 +176,12 @@ export default function PerceptronDemo() {
     }
 
     // Grid and ticks.
-    ctx.strokeStyle = "rgba(20,32,74,0.06)";
+    ctx.strokeStyle = "rgba(65, 51, 51,0.06)";
     ctx.lineWidth = 1;
-    ctx.fillStyle = "#5f6789";
+    ctx.fillStyle = "#7a6662";
     ctx.font = "10px ui-monospace, monospace";
     for (let t = Math.ceil(box.xMin); t <= Math.floor(box.xMax); t++) {
-      ctx.strokeStyle = t === 0 ? "rgba(20,32,74,0.16)" : "rgba(20,32,74,0.06)";
+      ctx.strokeStyle = t === 0 ? "rgba(65, 51, 51,0.16)" : "rgba(65, 51, 51,0.06)";
       ctx.beginPath();
       ctx.moveTo(sx(t) + 0.5, sy(box.yMin));
       ctx.lineTo(sx(t) + 0.5, sy(box.yMax));
@@ -239,7 +239,7 @@ export default function PerceptronDemo() {
     // Current sample.
     if (train.lastIndex !== null && data[train.lastIndex]) {
       const p = data[train.lastIndex];
-      ctx.strokeStyle = train.lastUpdated ? ACCENT : "#14204a";
+      ctx.strokeStyle = train.lastUpdated ? ACCENT : "#413333";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(sx(p.x1), sy(p.x2), 9, 0, Math.PI * 2);
@@ -250,7 +250,7 @@ export default function PerceptronDemo() {
     if (dataset === "custom" && showCursor) {
       const cx0 = sx(cursor[0]);
       const cy0 = sy(cursor[1]);
-      ctx.strokeStyle = "#14204a";
+      ctx.strokeStyle = "#413333";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(cx0 - 8, cy0);

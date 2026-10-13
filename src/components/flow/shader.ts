@@ -16,9 +16,9 @@ uniform float uT;         // seconds
 uniform float uP;         // phase progress 0..1
 uniform float uMode;      // 0 = cover, 1 = reveal
 
-const vec3 BG = vec3(0.255, 0.412, 0.882);    // royal blue #4169E1
-const vec3 AMBER = vec3(1.0, 0.980, 0.741);   // cream #fffabd filaments
-const vec3 RED = vec3(0.851, 0.325, 0.310);   // red #d9534f front
+const vec3 BG = vec3(0.192, 0.357, 0.549);    // steel blue #315B8C
+const vec3 AMBER = vec3(0.961, 0.922, 0.867); // cream #F5EBDD filaments
+const vec3 RED = vec3(0.949, 0.463, 0.369);   // coral #F2765E front
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p) {

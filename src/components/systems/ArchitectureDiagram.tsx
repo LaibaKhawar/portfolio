@@ -2,7 +2,7 @@
 
 import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import "@xyflow/react/dist/base.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   BaseEdge,
   Handle,
@@ -13,11 +13,12 @@ import {
   type EdgeProps,
   type Node,
   type NodeProps,
+  type ReactFlowInstance,
 } from "@xyflow/react";
 import type { ArchEdge, ArchNode } from "@/content/projects";
 import { cx } from "@/components/ui/primitives";
 
-type NodeData = ArchNode & { selected: boolean };
+type NodeData = ArchNode & { selected: boolean; vertical: boolean };
 
 const kindStyle: Record<NonNullable<ArchNode["kind"]>, string> = {
   input: "border-line-strong text-fg-muted",
@@ -40,14 +41,14 @@ function SystemNode({ data }: NodeProps<Node<NodeData>>) {
   return (
     <div
       className={cx(
-        "min-w-[120px] rounded-input border bg-bg-raised px-3 py-2 text-center text-[12px] leading-tight transition-shadow",
+        "min-w-[128px] rounded-input border bg-bg-raised px-3 py-2 text-center text-[13px] leading-tight transition-shadow",
         kindStyle[data.kind ?? "logic"],
         data.selected && "shadow-[0_0_0_2px_var(--accent)]",
       )}
     >
-      <Handle type="target" position={Position.Left} className="!size-1.5 !border-0 !bg-line-strong" />
+      <Handle type="target" position={data.vertical ? Position.Top : Position.Left} className="!size-1.5 !border-0 !bg-line-strong" />
       {data.label}
-      <Handle type="source" position={Position.Right} className="!size-1.5 !border-0 !bg-line-strong" />
+      <Handle type="source" position={data.vertical ? Position.Bottom : Position.Right} className="!size-1.5 !border-0 !bg-line-strong" />
     </div>
   );
 }
@@ -56,7 +57,7 @@ function FlowEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targ
   const [path, lx, ly] = getBezierPath({ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition });
   return (
     <>
-      <BaseEdge id={id} path={path} style={{ stroke: "rgba(20,32,74,0.18)", strokeWidth: 1.2 }} />
+      <BaseEdge id={id} path={path} style={{ stroke: "rgba(65, 51, 51,0.18)", strokeWidth: 1.2 }} />
       {data?.animate ? (
         <circle r={2.6} fill="var(--accent)">
           <animateMotion dur="2.4s" repeatCount="indefinite" begin={`${data.delay}s`} path={path} />
@@ -78,6 +79,34 @@ export function ArchitectureDiagram({ nodes, edges, height = 340, title }: { nod
   const reduce = useReducedMotionSafe();
   const [selected, setSelected] = useState<string | null>(null);
 
+  // Fit to the container: re-fit on every resize, and lay out top-to-bottom when narrow.
+  const box = useRef<HTMLDivElement>(null);
+  const flow = useRef<ReactFlowInstance<Node<NodeData>, Edge<{ animate: boolean; delay: number }>> | null>(null);
+  const [vertical, setVertical] = useState(false);
+  const [boxWidth, setBoxWidth] = useState(0);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      setVertical(entry.contentRect.width < 560);
+      setBoxWidth(entry.contentRect.width);
+      requestAnimationFrame(() => flow.current?.fitView({ padding: 0.12, duration: 0 }));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const stageCount = Math.max(...nodes.map((n) => n.stage)) + 1;
+  const maxPerStage = Math.max(...Array.from({ length: stageCount }, (_, i) => nodes.filter((n) => n.stage === i).length));
+  // Height follows the diagram's own proportions so fitView fills the box instead of shrinking.
+  const layoutW = (stageCount - 1) * 170 + 170;
+  const layoutH = (maxPerStage - 1) * 74 + 90;
+  const boxHeight = vertical
+    ? Math.min(820, 100 + stageCount * 88)
+    : boxWidth
+      ? Math.round(Math.min(height, Math.max(220, (boxWidth * layoutH) / layoutW + 60)))
+      : height;
+
   const { rfNodes, rfEdges } = useMemo(() => {
     const byStage = new Map<number, ArchNode[]>();
     nodes.forEach((n) => byStage.set(n.stage, [...(byStage.get(n.stage) ?? []), n]));
@@ -86,11 +115,12 @@ export function ArchitectureDiagram({ nodes, edges, height = 340, title }: { nod
     const rfNodes: Node<NodeData>[] = nodes.map((n) => {
       const col = byStage.get(n.stage)!;
       const idx = col.indexOf(n);
+      const across = idx - (col.length - 1) / 2;
       return {
         id: n.id,
         type: "system",
-        position: { x: n.stage * colW, y: (idx - (col.length - 1) / 2) * rowH },
-        data: { ...n, selected: n.id === selected },
+        position: vertical ? { x: across * 150, y: n.stage * 88 } : { x: n.stage * colW, y: across * rowH },
+        data: { ...n, selected: n.id === selected, vertical },
         draggable: false,
         connectable: false,
       };
@@ -104,20 +134,24 @@ export function ArchitectureDiagram({ nodes, edges, height = 340, title }: { nod
       data: { animate: !reduce, delay: (i % 5) * 0.45 },
     }));
     return { rfNodes, rfEdges };
-  }, [nodes, edges, selected, reduce]);
+  }, [nodes, edges, selected, reduce, vertical]);
 
   const current = nodes.find((n) => n.id === selected);
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
-      <div className="overflow-hidden rounded-card border border-line bg-bg-raised" style={{ height }} data-lenis-prevent>
+    <div className="grid gap-3">
+      <div ref={box} className="overflow-hidden rounded-card border border-line bg-bg-raised" style={{ height: boxHeight }} data-lenis-prevent>
         <ReactFlow
+          key={vertical ? "v" : "h"}
+          onInit={(inst) => {
+            flow.current = inst;
+          }}
           nodes={rfNodes}
           edges={rfEdges}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           fitView
-          fitViewOptions={{ padding: 0.15 }}
+          fitViewOptions={{ padding: 0.12 }}
           proOptions={{ hideAttribution: true }}
           nodesDraggable={false}
           nodesConnectable={false}
@@ -125,8 +159,8 @@ export function ArchitectureDiagram({ nodes, edges, height = 340, title }: { nod
           zoomOnScroll={false}
           panOnScroll={false}
           preventScrolling={false}
-          minZoom={0.4}
-          maxZoom={1.6}
+          minZoom={0.2}
+          maxZoom={1.4}
           onNodeClick={(_, n) => setSelected((s) => (s === n.id ? null : n.id))}
           onPaneClick={() => setSelected(null)}
           aria-label={`${title} architecture diagram`}

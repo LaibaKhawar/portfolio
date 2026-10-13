@@ -121,7 +121,7 @@ export function MagazineCorridor({ projects }: { projects: CorridorProject[] }) 
           if (e.key === "ArrowRight") step(1);
           if (e.key === "ArrowLeft") step(-1);
         }}
-        className="relative h-[min(64dvh,560px)] min-h-[360px] w-full sm:h-[min(72dvh,640px)] touch-pan-y overflow-hidden rounded-card outline-offset-4 select-none"
+        className="relative h-[min(64dvh,560px)] min-h-[360px] w-full sm:h-[min(62dvh,540px)] touch-pan-y overflow-hidden rounded-card outline-offset-4 select-none"
         data-interactive
       >
         {!ready ? <div className="absolute inset-0 grid place-items-center text-sm text-fg-faint">Laying out the pages…</div> : null}

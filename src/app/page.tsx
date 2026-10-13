@@ -74,8 +74,8 @@ export default function Home() {
         <SkillsExplorer />
       </Section>
 
-      <section aria-labelledby="edu-title" className="mx-auto w-full max-w-[1400px] px-4 pb-24 sm:px-6 lg:px-10">
-        <div className="grid grid-cols-1 gap-10 border-t border-line pt-14 md:grid-cols-2">
+      <section aria-labelledby="edu-title" className="mx-auto w-full max-w-[1400px] px-4 pb-14 sm:px-6 md:pb-20 lg:px-10">
+        <div className="grid grid-cols-1 gap-10 border-t border-line pt-10 md:grid-cols-2">
           <InView>
             <h2 id="edu-title" className="font-display flex items-center gap-2.5 text-3xl text-fg">
               <GraduationCap size={22} className="text-accent" aria-hidden /> Education
@@ -109,7 +109,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Section id="contact" title="Get in touch" intro="Questions about a project, a role, or something to build together. Email is the fastest way to reach me." className="pb-32">
+      <Section id="contact" title="Get in touch" intro="Questions about a project, a role, or something to build together. Email is the fastest way to reach me." className="pb-20">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
           <InView className="grid content-start gap-6">
             <dl className="grid gap-5 text-sm">
