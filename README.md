@@ -46,15 +46,6 @@ The site is hosted on Vercel at [www.laibakhawar.com](https://www.laibakhawar.co
 
 The gallery, case-study page, sitemap, skills explorer, and retrieval lab pick the entry up automatically.
 
-## Contact form
-
-`/api/contact` validates input with zod, rate-limits per IP, and ignores honeypot submissions, then delivers the message to `CONTACT_TO` (default: the email in `profile.ts`):
-
-- With `RESEND_API_KEY` set, through [Resend](https://resend.com).
-- Otherwise through [FormSubmit](https://formsubmit.co), which needs no account. The first message sends a one-time confirmation email to the recipient; messages sent before it is confirmed are held and delivered afterwards.
-
-FormSubmit refuses requests from some server hosts (it returns 403 to Vercel functions), so when the server cannot deliver, the form posts to FormSubmit directly from the visitor's browser. If that also fails, the form tells the visitor and opens their email app with the message filled in.
-
 ## Accessibility and motion
 
 - `prefers-reduced-motion`: page transitions, smooth scrolling, the custom cursor, and hero animation are turned off or reduced to a still frame.

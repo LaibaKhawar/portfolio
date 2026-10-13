@@ -1,4 +1,4 @@
-import { ArrowRight, Certificate, GraduationCap } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, ArrowUpRight, Certificate, EnvelopeSimple, FileText, GithubLogo, GraduationCap, LinkedinLogo } from "@phosphor-icons/react/dist/ssr";
 import { ProjectsBand } from "@/components/sections/ProjectsBand";
 import { CharacterIntro } from "@/components/intro/CharacterIntro";
 import { BackToTop } from "@/components/shell/BackToTop";
@@ -7,7 +7,6 @@ import { ProjectCard } from "@/components/work/ProjectCard";
 import { SystemsExplorer } from "@/components/systems/SystemsExplorer";
 import { ExperienceTimeline } from "@/components/sections/ExperienceTimeline";
 import { SkillsExplorer } from "@/components/sections/SkillsExplorer";
-import { ContactForm } from "@/components/sections/ContactForm";
 import { InView } from "@/components/motion/Reveal";
 import { FlowLink } from "@/components/flow/FlowLink";
 import { buttonClass } from "@/components/ui/primitives";
@@ -108,42 +107,32 @@ export default function Home() {
         </div>
       </section>
 
-      <Section id="contact" title="Get in touch" intro="Questions about a project, a role, or something to build together. Email is the fastest way to reach me." className="pb-20">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
-          <InView className="grid content-start gap-6">
-            <dl className="grid gap-5 text-sm">
-              <div>
-                <dt className="text-fg-faint">Email</dt>
-                <dd className="mt-1">
-                  <a className="text-fg underline-offset-4 hover:underline" href={`mailto:${profile.email}`}>
-                    {profile.email}
-                  </a>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-fg-faint">Based in</dt>
-                <dd className="mt-1 text-fg">{profile.location}</dd>
-              </div>
-              <div>
-                <dt className="text-fg-faint">Elsewhere</dt>
-                <dd className="mt-1 flex flex-wrap gap-4">
-                  <a className="text-fg-muted hover:text-fg" href={profile.linkedin} target="_blank" rel="noreferrer">
-                    LinkedIn
-                  </a>
-                  <a className="text-fg-muted hover:text-fg" href={profile.github} target="_blank" rel="noreferrer">
-                    GitHub
-                  </a>
-                  <a className="text-fg-muted hover:text-fg" href={profile.resume} target="_blank" rel="noreferrer">
-                    Resume (PDF)
-                  </a>
-                </dd>
-              </div>
-            </dl>
-          </InView>
-          <InView delay={0.05}>
-            <ContactForm />
-          </InView>
-        </div>
+      <Section id="contact" title="Get in touch" intro={`Questions about a project, a role, or something to build together. Email is the fastest way to reach me. Based in ${profile.location}.`} className="pb-20">
+        <InView>
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { label: "Email", value: profile.email, href: `mailto:${profile.email}`, Icon: EnvelopeSimple, external: false },
+              { label: "LinkedIn", value: "in/laibakhawar", href: profile.linkedin, Icon: LinkedinLogo, external: true },
+              { label: "GitHub", value: "LaibaKhawar", href: profile.github, Icon: GithubLogo, external: true },
+              { label: "Resume", value: "PDF, one page", href: profile.resume, Icon: FileText, external: true },
+            ].map(({ label, value, href, Icon, external }) => (
+              <li key={label}>
+                <a
+                  href={href}
+                  {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+                  className="group flex h-full items-start justify-between gap-3 rounded-card border border-line bg-bg-raised px-5 py-5 transition-colors hover:border-accent"
+                >
+                  <span className="min-w-0">
+                    <Icon size={22} className="text-accent" aria-hidden />
+                    <span className="mt-4 block text-sm text-fg-faint">{label}</span>
+                    <span className="mt-0.5 block truncate text-base text-fg">{value}</span>
+                  </span>
+                  <ArrowUpRight size={16} aria-hidden className="mt-1 shrink-0 text-fg-faint transition-colors group-hover:text-accent" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </InView>
       </Section>
     </>
   );
